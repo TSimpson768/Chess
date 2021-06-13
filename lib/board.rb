@@ -39,7 +39,11 @@ class Board
 
   # Print the board to the console
   def print_board
-    
+    print_divider
+    @board.each do |row|
+      print_row(row)
+      print_divider
+    end
   end
 
   private
@@ -53,6 +57,16 @@ class Board
       end
       board.push(row)
     end
-   board 
+    board
+  end
+
+  def print_row(row)
+    print '|'
+    row.each {|place| place.print_place}
+    puts ' '
+  end
+
+  def print_divider
+    puts '================================='
   end
 end

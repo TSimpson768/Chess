@@ -1,14 +1,15 @@
 # The game class is in charge of controlling the flow of the game
 class Game
-
-  def initialize
-    @board 
-    @current_player
-    @opposing_player
+require_relative 'board'
+require_relative 'player'
+  def initialize(board = Board.new, white = Player.new, black = Player.new)
+    @board = board
+    @current_player = white
+    @opposing_player = black
   end
   # Main game loop
   def play
-    
+    @board.print_board
   end
   # Switch current and opposing players
   def switch_players
@@ -32,3 +33,5 @@ class Game
     
   end
 end
+
+Game.new.play
