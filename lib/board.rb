@@ -1,8 +1,11 @@
 # The board class stores the current state of the board.
+require_relative 'place'
 class Board
+  ROWS = 8
+  COLUMNS = 8
   def initialize
     # An array of 64 piece objects. Needs to be created in the starting possition for chess.
-    @board
+    @board = initialize_board
   end
 
   # Return true if in check
@@ -37,5 +40,19 @@ class Board
   # Print the board to the console
   def print_board
     
+  end
+
+  private
+
+  def initialize_board
+    board = []
+    ROWS.times do
+      row = []
+      COLUMNS.times do
+        row.push(Place.new)
+      end
+      board.push(row)
+    end
+   board 
   end
 end
