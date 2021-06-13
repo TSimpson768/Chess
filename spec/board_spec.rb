@@ -17,8 +17,7 @@ describe Board do
                          [Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new],
                          [Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new],
                          [Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new]]
-      expected_result = YAML.dump(expected_result)
-      result = YAML.dump(default_board.instance_variable_get(:@board))
+      result = default_board.instance_variable_get(:@board)
       expect(result).to eq(expected_result)
     end
   end

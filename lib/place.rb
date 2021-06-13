@@ -5,6 +5,7 @@ class Place
   def initialize(piece = nil)
     @piece = piece
   end
+  attr_reader :piece
 
   def print_place
     if @piece
@@ -13,5 +14,9 @@ class Place
       print '   '
     end
     print '|'
+  end
+
+  def ==(other)
+    @piece == other.piece
   end
 end
