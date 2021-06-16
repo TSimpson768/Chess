@@ -59,9 +59,20 @@ describe Board do
       end
     end
 
+    it 'Returns false when moving a nonexistant piece' do
+      expect(default_board).not_to be_legal([[3, 3], [2, 2]], black)
+    end
 
-    xit 'Returns false when moving a nonexistant piece' do
-      
+    context 'When a player attempts to move 2 of their pieces to the same place' do
+      xit 'returns false' do
+        
+      end
+    end
+
+    context 'When moving onto a square occupied by an enemy piece' do
+      xit 'returns true' do
+        
+      end
     end
   end
 end

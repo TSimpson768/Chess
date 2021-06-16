@@ -35,7 +35,8 @@ class Board
     start = move[0]
     destination = move[1]
     piece = locate_piece(start)
-    return false if piece.owner != player
+    return false if !piece || piece.owner != player
+
     possible_moves = piece.possible_moves
     possible_moves.each do |possible_move|
       after_move = [start[0] + possible_move[0], start[1] + possible_move[1]]
