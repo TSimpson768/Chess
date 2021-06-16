@@ -1,5 +1,6 @@
 # The board class stores the current state of the board.
 require_relative 'place'
+# Might need a module to take the print_methods
 class Board
   ROWS = 8
   COLUMNS = 8
@@ -23,17 +24,17 @@ class Board
     
   end
 
-  # str, str -> boolean
+  # [[int,int],[int,int]]-> boolean
   # Retrun true if the move from start_place to end place is legal. Else, return false
   # Plan 1 - is start place owned by the current player? return false if false
   # 2 - Starting from the start_place, perform a search (Depth or breath first? idk)
   # return true if an unobstructed path to end place is found. 
-  def legal?(start_place, end_place)
+  def legal?(move)
     
   end
 
   # Move the piece on start_place to end place
-  def move(start_place, end_place)
+  def move_piece(move)
     
   end
 

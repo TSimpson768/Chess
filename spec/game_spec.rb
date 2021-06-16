@@ -4,7 +4,45 @@ describe Game do
 
   describe '#make_move' do
     context 'when a legal move is received' do
-      xit 'calls @board.move with it'
+      subject(:legal_game) { described_class.new }
+      legal_move = [[1, 3], [2, 4]]
+      before do
+        allow(legal_game).to receive(:input_move).and_return(legal_move)
+      end
+      it 'calls @board.move with it' do
+        legal_board = instance_double(Board)
+        allow(legal_board).to receive(:legal?).and_return(true)
+        allow(legal_board).to receive(:move_piece)
+        legal_game.instance_variable_set(:@board, legal_board)
+
+        expect(legal_board).to receive(:move_piece).with(legal_move)
+        legal_game.make_move
+      end
+    end
+
+    context 'When an illegal move, followed by a legal move is received' do
+      subject(:illegal_game) { described_class.new }
+      illegal_move = [[0, 0], [6, 7]]
+      legal_move = [[3, 0], [1, 0]]
+      before do
+        illegal_board = instance_double(Board)
+        allow(illegal_board).to receive(:legal?).and_return(false, true)
+        allow(illegal_board).to receive(:move_piece)
+        illegal_game.instance_variable_set(:@board, illegal_board)
+        allow(illegal_game).to receive(:input_move).and_return(illegal_move, legal_move)
+        allow(illegal_game).to receive(:puts)
+      end
+      it 'puts an error message once' do
+        illegal_message = 'Please enter a legal move'
+        expect(illegal_game).to receive(:puts).with(illegal_message).once
+        illegal_game.make_move
+      end
+
+      it 'calls @board.move with the legal move' do
+        illegal_board = illegal_game.instance_variable_get(:@board)
+        expect(illegal_board).to receive(:move_piece).with(legal_move)
+        illegal_game.make_move
+      end
     end
   end
   describe '#input_move' do

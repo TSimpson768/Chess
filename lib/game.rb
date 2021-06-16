@@ -21,11 +21,14 @@ class Game
   # input move - returns move if it is correctly formatted
   # board.legal? - returns true if the move is lega;
   def make_move
+    move = nil
     loop do
       move = input_move
       break if @board.legal?(move)
+      
+      puts 'Please enter a legal move'
     end
-    @board.move(move)
+    @board.move_piece(move)
   end
   
   # Code to run when the game ends
