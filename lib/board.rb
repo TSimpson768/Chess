@@ -31,16 +31,17 @@ class Board
   # Plan 1 - is start place owned by the current player? return false if false
   # 2 - Starting from the start_place, perform a search (Depth or breath first? idk)
   # return true if an unobstructed path to end place is found. 
-  def legal?(move)
+  def legal?(move, player)
     start = move[0]
     destination = move[1]
     piece = locate_piece(start)
+    return false if piece.owner != player
     possible_moves = piece.possible_moves
     possible_moves.each do |possible_move|
       after_move = [start[0] + possible_move[0], start[1] + possible_move[1]]
-      return true if after_move == destination
+      return true if after_move == destination && !check?
     end
-    
+    false
   end
 
   # Move the piece on start_place to end place
