@@ -36,10 +36,15 @@ class Game
   # Takes a player input if it is valid (correctly formatted? Legal might be in make move)
   def input_move
     move_regex = /[a-h][1-8][a-h][1-8]/
-    input = gets.chomp.downcase
-    if move_regex.match?(input)
-      process_input(input)
+    input = nil
+    loop do
+      input = gets.chomp.downcase
+      break if move_regex.match?(input)
+
+      puts "I don't understand that. Please input a move in format [starting square][destination]
+ I.e. to move the piece at A1 to D4, type A1D4"
     end
+    process_input(input)
   end
 
   private

@@ -31,12 +31,21 @@ describe Game do
     end
 
     context 'When 2 invalid (correctly formatted) moves, followed by a valid move is input' do
-      xit 'puts an error message twice' do
-        
+      subject(:game_invalid) { described_class.new }
+      before do
+        allow(game_invalid).to receive(:gets).and_return("Lizard\n", "J9k9\n", "A1h8\n")
       end
 
-      xit 'Returns the valid move' do
-        
+      it 'puts an error message twice' do
+        error_message = "I don't understand that. Please input a move in format [starting square][destination]
+ I.e. to move the piece at A1 to D4, type A1D4"
+        expect(game_invalid).to receive(:puts).with(error_message).twice
+        game_invalid.input_move
+      end
+
+      it 'Returns the valid move' do
+        result = game_invalid.input_move
+        expect(result).to eq([[0, 0], [7, 7]])
       end
     end
   end
