@@ -5,7 +5,7 @@ class King < Piece
   # Return an array of every possible move this piece can make relative
   # to it's current possition
   def possible_moves
-    
+    [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1]]
   end
 
   private
