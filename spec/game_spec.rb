@@ -1,6 +1,49 @@
 require '../lib/game'
 describe Game do
   subject(:game_default) { described_class.new }
+  describe '#switch_players' do
+    context 'When the current_player is white' do
+      white = nil
+      black = nil
+      before do
+        white = game_default.instance_variable_get(:@current_player)
+        black = game_default.instance_variable_get(:@opposing_player)
+      end
+      it 'sets black as the current player' do
+        game_default.switch_players
+        new_current = game_default.instance_variable_get(:@current_player)
+        expect(new_current).to equal(black)
+      end
+
+      it 'sets white as the oposing player' do
+        game_default.switch_players
+        new_opposing = game_default.instance_variable_get(:@opposing_player)
+        expect(new_opposing).to equal(white)
+      end
+    end
+
+    context 'When black is the current player' do
+      white = nil
+      black = nil
+      before do
+        white = game_default.instance_variable_get(:@current_player)
+        black = game_default.instance_variable_get(:@opposing_player)
+        game_default.instance_variable_set(:@current_player, black)
+        game_default.instance_variable_set(:@opposing_player, white)
+      end
+      it 'sets white as the current player' do
+        game_default.switch_players
+        new_current = game_default.instance_variable_get(:@current_player)
+        expect(new_current).to equal(white)
+      end
+
+      it 'Sets black as the opposing player' do
+        game_default.switch_players
+        new_opposing = game_default.instance_variable_get(:@opposing_player)
+        expect(new_opposing).to equal(black)
+      end
+    end
+  end
 
   describe '#make_move' do
     context 'when a legal move is received' do

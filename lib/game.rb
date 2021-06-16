@@ -8,12 +8,16 @@ class Game
     @opposing_player = black
   end
   # Main game loop
+
   def play
     @board.print_board
   end
+
   # Switch current and opposing players
   def switch_players
-    
+    temp = @current_player
+    @current_player = @opposing_player
+    @opposing_player = temp
   end
 
   # Make a valid move
