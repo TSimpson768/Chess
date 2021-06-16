@@ -2,7 +2,9 @@
 class Game
   require_relative 'board'
   require_relative 'player'
-  def initialize(board = Board.new, white = Player.new, black = Player.new)
+  require_relative 'constants'
+  include Constants
+  def initialize(board = Board.new, white = Player.new(WHITE), black = Player.new(BLACK))
     @board = board
     @current_player = white
     @opposing_player = black
