@@ -38,12 +38,8 @@ class Board
     piece = locate_piece(start)
     return false if !piece || piece.owner != player
 
-    possible_moves = piece.possible_moves
-    possible_moves.each do |possible_move|
-      after_move = [start[0] + possible_move[0], start[1] + possible_move[1]]
-      return true if after_move == destination && !check?
-    end
-    false
+    possible_moves = piece.possible_moves(start, self)
+    possible_moves.any? { |reachable_coord| reachable_coord == destination }
   end
 
   # Move the piece on start_place to end place
@@ -67,6 +63,7 @@ class Board
   end
 
   # Return true if a piece belonging to owner can leagally occupy pos. Else, return false
+  # TODO: Return false for Out of bounds position
   def valid_pos?(pos, owner)
     piece = locate_piece(pos)
 
