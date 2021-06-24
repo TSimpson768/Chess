@@ -64,14 +64,26 @@ describe Board do
     end
 
     context 'When a player attempts to move 2 of their pieces to the same place' do
-      xit 'returns false' do
-        
+      subject(:same_place_board) { described_class.new }
+      it 'returns false' do
+        board = same_place_board.instance_variable_get(:@board)
+        board[4][4].instance_variable_set(:@piece, white_king)
+        other_piece = instance_double(Piece)
+        allow(other_piece).to receive(:owner).and_return(white)
+        board[4][5].instance_variable_set(:@piece, other_piece)
+        expect(same_place_board).not_to be_legal([[4, 4], [4, 5]], white)
       end
     end
 
     context 'When moving onto a square occupied by an enemy piece' do
-      xit 'returns true' do
-        
+      subject(:capture_board) { described_class.new }
+      it 'returns true' do
+        board = capture_board.instance_variable_get(:@board)
+        board[4][4].instance_variable_set(:@piece, white_king)
+        other_piece = instance_double(Piece)
+        allow(other_piece).to receive(:owner).and_return(black)
+        board[4][5].instance_variable_set(:@piece, other_piece)
+        expect(capture_board).to be_legal([[4, 4], [5, 5]], white)
       end
     end
   end
