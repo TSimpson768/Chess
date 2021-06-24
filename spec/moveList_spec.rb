@@ -13,6 +13,7 @@ describe MoveList do
         board = instance_double(Board)
         owner = instance_double(Player)
         allow(board).to receive(:locate_piece).and_return(nil)
+        allow(board).to receive(:check_after_move?).and_return(false)
         expected_result = [[4, 3], [5, 3], [6, 3], [7, 3]]
         result = valid_movelist.valid_moves(starting_position, board, owner)
         expect(result).to eq expected_result
@@ -27,6 +28,7 @@ describe MoveList do
         piece = instance_double(Piece)
         allow(board).to receive(:locate_piece)
         allow(board).to receive(:locate_piece).with([6, 3]).and_return(piece)
+        allow(board).to receive(:check_after_move?).and_return(false)
         allow(piece).to receive(:owner).and_return(owner)
         expected_result = [[4, 3], [5, 3]]
         result = valid_movelist.valid_moves(starting_position, board, owner)
@@ -43,6 +45,7 @@ describe MoveList do
         piece = instance_double(Piece)
         allow(board).to receive(:locate_piece)
         allow(board).to receive(:locate_piece).with([6, 3]).and_return(piece)
+        allow(board).to receive(:check_after_move?).and_return(false)
         allow(piece).to receive(:owner).and_return(opponent)
         expected_result = [[4, 3], [5, 3], [6, 3]]
         result = valid_movelist.valid_moves(starting_position, board, owner)
@@ -58,6 +61,7 @@ describe MoveList do
         owner = instance_double(Player)
         allow(board).to receive(:locate_piece)
         allow(board).to receive(:valid_pos?).and_return(true)
+        allow(board).to receive(:check_after_move?).and_return(false)
         expected_result = [0, 1]
         result = non_sliding_movelist.valid_moves(starting_position, board, owner)
         expect(result).to eq(expected_result)
@@ -72,6 +76,7 @@ describe MoveList do
         allow(board).to receive(:locate_piece).with([0, 1]).and_return(piece)
         allow(board).to receive(:valid_pos?).and_return(true)
         allow(board).to receive(:valid_pos?).with([0, 1], owner).and_return(false)
+        allow(board).to receive(:check_after_move?).and_return(false)
         allow(piece).to receive(:owner).and_return(owner)
         result = non_sliding_movelist.valid_moves(starting_position, board, owner)
         expect(result).to eq([])
@@ -86,6 +91,7 @@ describe MoveList do
         allow(board).to receive(:locate_piece)
         allow(board).to receive(:locate_piece).with([0, 1]).and_return(piece)
         allow(board).to receive(:valid_pos?).and_return(true)
+        allow(board).to receive(:check_after_move?).and_return(false)
         allow(piece).to receive(:owner).and_return(opponent)
         expected_result = [0, 1]
         result = non_sliding_movelist.valid_moves(starting_position, board, owner)
@@ -98,6 +104,7 @@ describe MoveList do
         owner = instance_double(Player)
         allow(board).to receive(:locate_piece)
         allow(board).to receive(:valid_pos?).with([0, 8], owner).and_return(false)
+        allow(board).to receive(:check_after_move?).and_return(false)
         expected_result = []
         result = non_sliding_movelist.valid_moves(starting_position, board, owner)
         expect(result).to eq(expected_result)

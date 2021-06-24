@@ -42,6 +42,12 @@ class Board
     possible_moves.any? { |reachable_coord| reachable_coord == destination }
   end
 
+  # Return true if moving from start to end will leave player in check
+  # TODO
+  def check_after_move?(start_pos, end_pos, player)
+    
+  end
+
   # Move the piece on start_place to end place
   def move_piece(move)
     

@@ -47,7 +47,7 @@ describe Board do
       check_king_board = default_board.instance_variable_get(:@board)
       check_king_board[0][0].instance_variable_set(:@piece, white_king)
       check_king_board[0][2].instance_variable_set(:@piece, black_king)
-      allow(default_board).to receive(:check?).and_return(true)
+      allow(default_board).to receive(:check_after_move?).and_return(true)
       expect(default_board).not_to be_legal([[0, 0], [0, 1]], white)
     end
     context 'When attempting to move another players piece' do
