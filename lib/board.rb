@@ -1,6 +1,7 @@
 # The board class stores the current state of the board.
 require_relative 'place'
 require_relative 'constants'
+require 'pry'
 # Might need a module to take the print_methods
 class Board
   include Constants
@@ -59,6 +60,21 @@ class Board
     end
   end
 
+  # [Int, int] -> Piece or nil gets a pointer to the piece at the given co-ordinates, if it exists
+  def locate_piece(coords)
+    place = @board[coords[0]][coords[1]]
+    place.piece
+  end
+
+  # Return true if a piece belonging to owner can leagally occupy pos. Else, return false
+  def valid_pos?(pos, owner)
+    piece = locate_piece(pos)
+
+    return true if piece.nil? || piece.owner != owner
+
+    false
+  end
+
   private
 
   def initialize_board
@@ -83,9 +99,5 @@ class Board
     puts '================================='
   end
 
-  # [Int, int] -> Piece or nil gets a pointer to the piece at the given co-ordinates, if it exists
-  def locate_piece(coords)
-    place = @board[coords[0]][coords[1]]
-    place.piece
-  end
+
 end
