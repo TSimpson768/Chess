@@ -91,6 +91,17 @@ describe MoveList do
         result = non_sliding_movelist.valid_moves(starting_position, board, owner)
         expect(result).to eq(expected_result)
       end
+
+      it 'Returns false if that move is out of bounds' do
+        starting_position = [0, 7]
+        board = instance_double(Board)
+        owner = instance_double(Player)
+        allow(board).to receive(:locate_piece)
+        allow(board).to receive(:valid_pos?).with([0, 8], owner).and_return(false)
+        expected_result = []
+        result = non_sliding_movelist.valid_moves(starting_position, board, owner)
+        expect(result).to eq(expected_result)
+      end
     end
   end
 end

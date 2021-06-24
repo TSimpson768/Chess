@@ -1,6 +1,7 @@
 require 'pry'
 # Movelist starts with a posible move, and wether or not that move is
 # sliding (like a rook, bishop or queen)
+# TODO: Refactor
 class MoveList
   def initialize(move, sliding = false)
     @move = move
