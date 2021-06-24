@@ -11,10 +11,12 @@ class MoveList
   # starting_position
   def valid_moves(starting_position, board, owner)
     moves = []
-    return moves if sliding == false
+    return moves if @sliding == false
 
     loop do
-      next_pos = [starting_position[0] + move[0], starting_position[1] + move[1]]
+      next_pos = [starting_position[0] + @move[0], starting_position[1] + @move[1]]
+      break if out_of_bounds?(next_pos)
+
       next_piece = board.locate_piece(next_pos)
       if next_piece
         moves.push(next_pos) if owner != next_piece.owner
@@ -23,5 +25,12 @@ class MoveList
       moves.push(next_pos)
       starting_position = next_pos
     end
+    moves
+  end
+
+  private
+
+  def out_of_bounds?(next_pos)
+    next_pos.any? { |coord| coord < 0 || coord > 7 }
   end
 end
