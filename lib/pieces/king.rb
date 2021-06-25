@@ -1,6 +1,6 @@
 # The class for a king piece
 require_relative 'piece'
-require_relative 'moveList'
+require_relative '../moveList'
 class King < Piece
   MOVES = [MoveList.new([1, 0]), MoveList.new([-1, 0]), MoveList.new([0, 1]),
            MoveList.new([0, -1]), MoveList.new([1, 1]), MoveList.new([-1, 1]),

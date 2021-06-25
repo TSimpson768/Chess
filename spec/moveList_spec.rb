@@ -1,7 +1,7 @@
 require '../lib/moveList'
 require '../lib/player'
 require '../lib/board'
-require '../lib/piece'
+require_relative '../lib/pieces/piece'
 
 describe MoveList do
   describe '#valid_moves' do
