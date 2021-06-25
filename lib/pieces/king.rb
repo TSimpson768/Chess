@@ -6,7 +6,7 @@ class King < Piece
            MoveList.new([0, -1]), MoveList.new([1, 1]), MoveList.new([-1, 1]),
            MoveList.new([1, -1]), MoveList.new([-1, -1])].freeze
   # Return an array containing every space on the board this piece can legally move to
-  # [int, int]
+  # [int, int], board -> Array of [int, int]
   def possible_moves(pos, board)
     MOVES.reduce([]) { |all_moves, move| all_moves.push(move.valid_moves(pos, board, owner)) }
   end
