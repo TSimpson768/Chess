@@ -9,6 +9,12 @@ class Piece
   end
   attr_reader :symbol, :owner
 
+  # Return an array containing every space on the board this piece can legally move to
+  # [int, int], board -> Array of [int, int]
+  def possible_moves(pos, board)
+    @moves.reduce([]) { |all_moves, move| all_moves.push(move.valid_moves(pos, board, @owner)) }
+  end
+
   def set_symbol
     'W' if @owner.colour == WHITE
 
