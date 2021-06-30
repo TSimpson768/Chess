@@ -62,7 +62,7 @@ describe MoveList do
         allow(board).to receive(:locate_piece)
         allow(board).to receive(:valid_pos?).and_return(true)
         allow(board).to receive(:check_after_move?).and_return(false)
-        expected_result = [0, 1]
+        expected_result = [[0, 1]]
         result = non_sliding_movelist.valid_moves(starting_position, board, owner)
         expect(result).to eq(expected_result)
       end
@@ -93,7 +93,7 @@ describe MoveList do
         allow(board).to receive(:valid_pos?).and_return(true)
         allow(board).to receive(:check_after_move?).and_return(false)
         allow(piece).to receive(:owner).and_return(opponent)
-        expected_result = [0, 1]
+        expected_result = [[0, 1]]
         result = non_sliding_movelist.valid_moves(starting_position, board, owner)
         expect(result).to eq(expected_result)
       end
