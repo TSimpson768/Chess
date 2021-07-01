@@ -10,7 +10,10 @@ class Board
   def initialize
     # An array of 64 piece objects. Needs to be created in the starting possition for chess.
     @board = initialize_board
+    @last_moved_piece = nil
   end
+
+  attr_reader :last_moved_piece
 
   # Return true if in check
   def check?
