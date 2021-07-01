@@ -7,7 +7,9 @@ class Pawn < Piece
   def possible_moves(pos, board)
     moves = super(pos, board)
     double = double_move(pos, board)
+    captures = captures(pos, board)
     moves.push(double) unless double.nil?
+    moves.push(captures) unless captures.empty?
 
     moves
   end
@@ -30,5 +32,18 @@ class Pawn < Piece
     return destination unless board.locate_piece(in_between) && board.locate_piece(destination)
 
     []
+  end
+  # Hack? - I don't lke having to flatten at end
+  def captures(pos, board)
+    possible_moves = []
+    capture_moves = [[1, 1], [1, -1]]
+    capture_moves.each do |move|
+      next_move = [pos[0] + move[0], pos[1] + move[1]]
+      next_piece = board.locate_piece(next_move)
+      next unless next_piece
+
+      possible_moves.push(next_move) if next_piece.owner != @owner
+    end
+    possible_moves.flatten(1)
   end
 end
