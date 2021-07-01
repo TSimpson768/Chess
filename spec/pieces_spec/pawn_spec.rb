@@ -1,4 +1,6 @@
 require_relative '../../lib/pieces/pawn'
+require_relative '../../lib/player'
+require_relative '../../lib/board'
 
 describe Pawn do
 
@@ -41,31 +43,43 @@ describe Pawn do
         result = white_pawn.possible_moves(pos, empty_board)
         expect(result).to eq(expected_result)
       end
-  
-      xit 'Can move diagonaly up a rank and down a file to capture a piece' do
-        
+
+      it 'Can move diagonaly up a rank and down a file to capture a piece' do
+        pos = [3, 3]
+        allow(empty_board).to receive(:locate_piece).with([4, 2]).and_return(black_pawn)
+        expected_result = [[4, 3], [4, 2]]
+        result = white_pawn.possible_moves(pos, empty_board)
+        expect(result).to eq(expected_result)
       end
-  
+
       xit 'Can capture an opposing pawn that has just moved 2 places on passent' do
         
       end
     end
-  
     context 'For a black pawn' do
-      xit ' Can move down either 1 or 2 ranks if it is on the 7th rank' do
-        
+      subject(:black_pawn) { described_class.new(black) }
+      let(:white_pawn) { described_class.new(white) }
+      it ' Can move down either 1 or 2 ranks if it is on the 7th rank' do
+        pos = [6, 1]
+        expected_result = [[5, 1], [4, 1]]
+        result = black_pawn.possible_moves(pos, empty_board)
+        expect(result).to eq(expected_result)
       end
-  
-      xit 'Can move only one square down rank on th 6th to 2nd ranks' do
-        
+
+      it 'Can move only one square down rank on th 6th to 2nd ranks' do
+        pos = [5, 1]
+        expected_result = [[4, 1]]
+        result = black_pawn.possible_moves(pos, empty_board)
+        expect(result).to eq(expected_result)
       end
-  
-      xit 'Can move diagonaly down a rank and a file to capture a piece' do
-        
-      end
-  
-      xit 'Can move diagonaly down a rank and uo a file to capture a piece' do
-        
+
+      it 'Can move diagonaly down a rank and up or down file to capture a piece' do
+        pos = [4, 1]
+        allow(empty_board).to receive(:locate_piece).with([3, 0]).and_return(white_pawn)
+        allow(empty_board).to receive(:locate_piece).with([3, 2]).and_return(white_pawn)
+        expected_result = [[3, 0], [3, 1], [3, 2]].sort
+        result = black_pawn.possible_moves(pos, empty_board).sort
+        expect(result).to eq(expected_result)
       end
   
       xit 'Can capture an opposing pawn that has just moved 2 places on passent' do
