@@ -14,6 +14,7 @@ describe Pawn do
       allow(empty_board).to receive(:valid_pos?).and_return(true)
       allow(empty_board).to receive(:check_after_move?).and_return(false)
       allow(empty_board).to receive(:locate_piece).and_return(nil)
+      allow(empty_board).to receive(:last_moved_piece)
     end
     context 'For a white pawn' do
       subject(:white_pawn) { described_class.new(white) }
@@ -52,8 +53,14 @@ describe Pawn do
         expect(result).to eq(expected_result)
       end
 
-      xit 'Can capture an opposing pawn that has just moved 2 places on passent' do
-        
+      it 'Can capture an opposing pawn that has just moved 2 places on passent' do
+        pos = [4, 2]
+        allow(empty_board).to receive(:locate_piece).with([4, 3]).and_return(black_pawn)
+        allow(empty_board).to receive(:last_moved_piece).and_return(black_pawn)
+
+        expected_result = [[5, 2], [5, 3]]
+        result = white_pawn.possible_moves(pos, empty_board)
+        expect(result).to eq(expected_result)
       end
     end
     context 'For a black pawn' do
@@ -82,8 +89,13 @@ describe Pawn do
         expect(result).to eq(expected_result)
       end
   
-      xit 'Can capture an opposing pawn that has just moved 2 places on passent' do
-        
+      it 'Can capture an opposing pawn that has just moved 2 places on passent' do
+        pos = [3, 3]
+        allow(empty_board).to receive(:locate_piece).with([3, 4]).and_return(white_pawn)
+        allow(empty_board).to receive(:last_moved_piece).and_return(white_pawn)
+        expected_result = [[2, 3], [2, 4]]
+        result = black_pawn.possible_moves(pos, empty_board)
+        expect(result).to eq(expected_result)
       end
     end
   end

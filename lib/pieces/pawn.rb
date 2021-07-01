@@ -15,7 +15,8 @@ class Pawn < Piece
     captures = captures(pos, board)
     moves.push(double) unless double.nil?
     captures.each { |cap_move| moves.push(cap_move) } unless captures.empty?
-
+    ep_moves = en_passant_moves(pos, board)
+    moves.push(ep_moves) unless ep_moves.nil?
     moves
   end
 
@@ -52,6 +53,15 @@ class Pawn < Piece
       possible_moves.push(next_move) if next_piece.owner != @owner
     end
     possible_moves
+  end
+
+  def en_passant_moves(pos, board)
+    en_passant_targets = [[pos[0], pos[1] - 1], [pos[0], pos[1] + 1]]
+    en_passant_targets.each do |target|
+      target_piece = board.locate_piece(target)
+      return [target[0] + @move_direction, target[1]] if !target_piece.nil? && target_piece == board.last_moved_piece
+    end
+    nil
   end
 
   def set_start_rank
