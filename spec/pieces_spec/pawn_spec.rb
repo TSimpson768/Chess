@@ -62,6 +62,13 @@ describe Pawn do
         result = white_pawn.possible_moves(pos, empty_board)
         expect(result).to eq(expected_result)
       end
+
+      it 'cannot move up a rank without changing file to capture a piece' do
+        pos = [3, 3]
+        allow(empty_board).to receive(:locate_piece).with([4, 3]).and_return(black_pawn)
+        result = white_pawn.possible_moves(pos, empty_board)
+        expect(result).to be_empty
+      end
     end
     context 'For a black pawn' do
       subject(:black_pawn) { described_class.new(black) }
@@ -96,6 +103,13 @@ describe Pawn do
         expected_result = [[2, 3], [2, 4]]
         result = black_pawn.possible_moves(pos, empty_board)
         expect(result).to eq(expected_result)
+      end
+
+      it 'Cannot move down a rank to capture a piece without changing file' do
+        pos = [3, 3]
+        allow(empty_board).to receive(:locate_piece).with([2, 3]).and_return(white_pawn)
+        result = black_pawn.possible_moves(pos, empty_board)
+        expect(result).to be_empty
       end
     end
   end

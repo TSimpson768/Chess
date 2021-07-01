@@ -10,7 +10,9 @@ class Pawn < Piece
   end
 
   def possible_moves(pos, board)
-    moves = super(pos, board)
+    moves = []
+    next_space = [pos[0] + @move_direction, pos[1]]
+    moves.push(next_space) unless board.locate_piece(next_space)
     double = double_move(pos, board)
     captures = captures(pos, board)
     moves.push(double) unless double.nil?
