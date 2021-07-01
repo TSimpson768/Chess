@@ -6,8 +6,10 @@ class Pawn < Piece
 
   def possible_moves(pos, board)
     moves = super(pos, board)
-    moves.push(double_move(pos, board))
+    double = double_move(pos, board)
+    moves.push(double) unless double.nil?
 
+    moves
   end
   private
 
@@ -21,7 +23,7 @@ class Pawn < Piece
   end
 
   def double_move(pos, board)
-    return [] if pos[0] != 1
+    return if pos[0] != 1
 
     in_between = [pos[0] + 1, pos[1]]
     destination = [pos[0] + 2, pos[1]]

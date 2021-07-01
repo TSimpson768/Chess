@@ -24,11 +24,14 @@ describe Pawn do
         result = white_pawn.possible_moves(pos, empty_board)
         expect(result).to eq(expected_result)
       end
-  
-      xit 'can move only one square forward on third - 7th ranks' do
-        
+
+      it 'can move only one square forward on third - 7th ranks' do
+        pos = [3, 3]
+        expected_result = [[4, 3]]
+        result = white_pawn.possible_moves(pos, empty_board)
+        expect(result).to eq(expected_result)
       end
-  
+
       xit 'Can move diagonaly up a rank and a file to capture a piece' do
         
       end
