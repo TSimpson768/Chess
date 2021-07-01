@@ -18,7 +18,6 @@ class Piece
 
   def set_symbol
     'W' if @owner.colour == WHITE
-
     'B' if @owner.colour == BLACK
   end
 end

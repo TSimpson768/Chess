@@ -8,6 +8,7 @@ class Bishop < Piece
     @moves = [MoveList.new([1, 1], true), MoveList.new([1, -1], true), MoveList.new([-1, 1], true),
               MoveList.new([-1, -1], true)]
   end
+
   private
 
   def set_symbol
