@@ -16,8 +16,13 @@ class Board
   attr_reader :last_moved_piece
 
   # Return true if in check
-  def check?
-    
+  def check?(player)
+    attacked_spaces = list_unsafe_spaces(player).compact
+    attacked_spaces.each do |space|
+      piece = locate_piece(space)
+      return true if piece && piece.owner == player && piece.instance_of?(King)
+    end
+    false
   end
 
   # Return true if in checkmate
@@ -105,5 +110,17 @@ class Board
     puts '================================='
   end
 
-
+  # Generates a list of all spaces on the chessboard that are unsafe (attacked by opponent)
+  def list_unsafe_spaces(player)
+    (0..ROWS - 1).each_with_object([]) do |x, attacked_spaces|
+      (0..COLUMNS - 1).each_with_object(attacked_spaces) do |y, attacked_spaces|
+        piece = locate_piece([y, x])
+        if piece && piece.owner != player
+          attacked_spaces.push(piece.possible_moves([y, x], self))
+        end
+        attacked_spaces
+      end
+    end
+  end
 end
+

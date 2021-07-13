@@ -2,12 +2,28 @@ require '../lib/board'
 require '../lib/place'
 require_relative '../lib/pieces/piece'
 require_relative '../lib/pieces/king'
+require_relative '../lib/pieces/queen'
 require '../lib/constants'
 require '../lib/player'
 require 'yaml'
 describe Board do
   include Constants
   subject(:default_board) { described_class.new }
+  let(:white_king) { instance_double(King) }
+  let(:black_king) { instance_double(King) }
+  let(:white_queen) { instance_double(Queen) }
+  let(:black_queen) { instance_double(Queen) }
+  let(:white) { instance_double(Player) }
+  let(:black) { instance_double(Player) }
+  before do
+    allow(white).to receive(:colour).and_return(:white)
+    allow(black).to receive(:colour).and_return(:black)
+    allow(white_king).to receive(:owner).and_return(white)
+    allow(white_queen).to receive(:owner).and_return(white)
+    allow(black_king).to receive(:owner).and_return(black)
+    allow(black_king).to receive(:instance_of?).with(King).and_return(true)
+    allow(black_queen).to receive(:owner).and_return(black)
+  end
   matcher :place_equal do
     match { place }
   end
@@ -85,6 +101,23 @@ describe Board do
         board[4][5].instance_variable_set(:@piece, other_piece)
         expect(capture_board).to be_legal([[4, 4], [5, 5]], white)
       end
+    end
+  end
+  describe '#check' do
+    subject(:check_board) { described_class.new }
+    it 'returns true if the given player is in check' do
+      allow(black_king).to receive(:possible_moves)
+      allow(white_queen).to receive(:possible_moves).and_return([1, 1])
+      allow(white_king).to receive(:possible_moves)
+      board = check_board.instance_variable_get(:@board)
+      board[1][1].instance_variable_set(:@piece, black_king)
+      board[7][7].instance_variable_set(:@piece, white_king)
+      board[1][7].instance_variable_set(:@piece, white_queen)
+      expect(check_board).to be_check(black)
+    end
+
+    xit 'returns false if the given player is not is check' do
+      
     end
   end
 end
