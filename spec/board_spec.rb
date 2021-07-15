@@ -105,10 +105,12 @@ describe Board do
   end
   describe '#check' do
     subject(:check_board) { described_class.new }
-    it 'returns true if the given player is in check' do
+    before do
       allow(black_king).to receive(:possible_moves)
       allow(white_queen).to receive(:possible_moves).and_return([1, 1])
       allow(white_king).to receive(:possible_moves)
+    end
+    it 'returns true if the given player is in check' do
       board = check_board.instance_variable_get(:@board)
       board[1][1].instance_variable_set(:@piece, black_king)
       board[7][7].instance_variable_set(:@piece, white_king)
@@ -116,8 +118,12 @@ describe Board do
       expect(check_board).to be_check(black)
     end
 
-    xit 'returns false if the given player is not is check' do
-      
+    it 'returns false if the given player is not is check' do
+      board = check_board.instance_variable_get(:@board)
+      board[2][3].instance_variable_set(:@piece, black_king)
+      board[7][7].instance_variable_set(:@piece, white_king)
+      board[1][7].instance_variable_set(:@piece, white_queen)
+      expect(check_board).not_to be_check(black)
     end
   end
 end
