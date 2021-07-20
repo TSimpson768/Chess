@@ -106,9 +106,9 @@ describe Board do
   describe '#check' do
     subject(:check_board) { described_class.new }
     before do
-      allow(black_king).to receive(:possible_moves)
-      allow(white_queen).to receive(:possible_moves).and_return([1, 1])
-      allow(white_king).to receive(:possible_moves)
+      allow(black_king).to receive(:possible_moves).and_return([[1, 0]])
+      allow(white_queen).to receive(:possible_moves).and_return([[1, 1]])
+      allow(white_king).to receive(:possible_moves).and_return([[6, 6]])
     end
     it 'returns true if the given player is in check' do
       board = check_board.instance_variable_get(:@board)
@@ -124,6 +124,67 @@ describe Board do
       board[7][7].instance_variable_set(:@piece, white_king)
       board[1][7].instance_variable_set(:@piece, white_queen)
       expect(check_board).not_to be_check(black)
+    end
+    describe '#checkmate' do
+      subject(:checkmate_board) { described_class.new }
+      let(:white_rook_one) { instance_double(Rook) }
+      let(:black_rook) { instance_double(Rook) }
+      before do
+        allow(white_king).to receive(:possible_moves)
+        allow(black_king).to receive(:possible_moves)
+        allow(white_rook_one).to receive(:owner).and_return(white)
+        allow(checkmate_board).to receive(:check?).and_return(true)
+        allow(checkmate_board).to receive(:check_after_move?).and_return(true)
+        allow(black_rook).to receive(:owner).and_return(black)
+      end
+      let(:white_rook_two) { white_rook_one.clone }
+      it 'Returns true if players king is in check, and cannot move out' do
+        board = checkmate_board.instance_variable_get(:@board)
+        board[0][0].instance_variable_set(:@piece, black_king)
+        board[7][0].instance_variable_set(:@piece, white_rook_one)
+        board[7][1].instance_variable_set(:@piece, white_rook_two)
+        board[7][7].instance_variable_set(:@piece, white_king)
+        allow(black_king).to receive(:possible_moves).and_return([[1, 0], [1, 1], [0, 1]])
+        allow(white_rook_one).to receive(:possible_moves).and_return([[1, 0], [0, 0]])
+        allow(white_rook_two).to receive(:possible_moves).and_return([[1, 1], [0, 1]])
+        allow(checkmate_board).to receive(:check_after_move?).and_return(true)
+        expect(checkmate_board).to be_checkmate(black)
+      end
+
+      it 'Returns false if players king is in check, and can move out' do
+        allow(black_queen).to receive(:possible_moves).and_return([[7, 7]])
+        allow(white_king).to receive(:possible_moves).and_return([[6, 6], [6, 7]])
+        board = checkmate_board.instance_variable_get(:@board)
+        board[7][7].instance_variable_set(:@piece, white_king)
+        board[1][3].instance_variable_set(:@piece, black_king)
+        board[1][7].instance_variable_set(:@piece, black_queen)
+        allow(checkmate_board).to receive(:check_after_move?).with([7, 7], [6, 6], white_king.owner).and_return(false)
+        expect(checkmate_board).not_to be_checkmate(white)
+      end
+
+      it 'Returns false if players king is check, cannot move out and another piece can block check' do
+        board = checkmate_board.instance_variable_get(:@board)
+        board[0][0].instance_variable_set(:@piece, black_king)
+        board[7][0].instance_variable_set(:@piece, white_rook_one)
+        board[7][1].instance_variable_set(:@piece, white_rook_two)
+        board[7][7].instance_variable_set(:@piece, white_king)
+        board[2][7].instance_variable_set(:@piece, black_rook)
+        allow(black_king).to receive(:possible_moves).and_return([[1, 0], [1, 1], [0, 1]])
+        allow(white_rook_one).to receive(:possible_moves).and_return([[1, 0], [0, 0]])
+        allow(white_rook_two).to receive(:possible_moves).and_return([[1, 1], [0, 1]])
+        allow(black_rook).to receive(:possible_moves).and_return([[2, 0], [2, 1]])
+        allow(checkmate_board).to receive(:check_after_move?).and_return(true)
+        allow(checkmate_board).to receive(:check_after_move?).with([2, 7], [2, 0], black).and_return(false)
+        expect(checkmate_board).not_to be_checkmate(black)
+      end
+
+      it 'Returns false if player is not in check' do
+        allow(checkmate_board).to receive(:check?).and_return(false)
+        board = checkmate_board.instance_variable_get(:@board)
+        board[1][1].instance_variable_set(:@piece, black_king)
+        board[7][7].instance_variable_set(:@piece, white_king)
+        expect(checkmate_board).not_to be_checkmate(white)
+      end
     end
   end
 end

@@ -19,15 +19,24 @@ class Board
   def check?(player)
     attacked_spaces = list_unsafe_spaces(player).compact
     attacked_spaces.each do |space|
-      piece = locate_piece(space)
+      piece = locate_piece(space.flatten)
       return true if piece && piece.owner == player && piece.instance_of?(King)
     end
     false
   end
 
-  # Return true if in checkmate
-  def checkmate?
-    
+  # Return true if player is in checkmate
+  # HACK: - To get around messy output of list_moves
+  def checkmate?(player)
+    return false unless check?(player)
+
+    # Get all legal moves for player
+    starts, destinations = list_moves(player, true)
+    destinations.flatten!(1)
+    destinations.each_with_index do |move, index|
+      return false unless check_after_move?(starts[index], move, player)
+    end
+    true
   end
 
   # Return true if a stalemate occurs
@@ -110,16 +119,36 @@ class Board
     puts '================================='
   end
 
-  # Generates a list of all spaces on the chessboard that are unsafe (attacked by opponent)
-  def list_unsafe_spaces(player)
-    (0..ROWS - 1).each_with_object([]) do |x, attacked_spaces|
+  # Returns two arrays of possible moves.An entry in the first is the starting pos
+  # For that move, the entry in the seccond array with the same index is the destinatino
+  # HACK : Need to tidy up output, and mabye shorten function
+  def list_moves(player, for_player)
+    (0..ROWS - 1).each_with_object([[], []]) do |x, attacked_spaces|
       (0..COLUMNS - 1).each_with_object(attacked_spaces) do |y, attacked_spaces|
         piece = locate_piece([y, x])
-        if piece && piece.owner != player
-          attacked_spaces.push(piece.possible_moves([y, x], self))
+        if piece && helper_for_list_moves(player, piece.owner, for_player)
+          attacked_by_piece = piece.possible_moves([y, x], self)
+          
+          attacked_by_piece.length.times { attacked_spaces[0].push([y, x]) }
+          attacked_spaces[1].push(attacked_by_piece)
         end
         attacked_spaces
       end
+    end
+  end
+
+  def list_unsafe_spaces(player)
+    list_moves(player, false)[1]
+  end
+
+  # Player, player, bool
+  # If equal == true, return result of player == piece_owner
+  # else, return player =! piece_owner
+  def helper_for_list_moves(player, piece_owner, equal)
+    if equal
+      player == piece_owner
+    else
+      player != piece_owner
     end
   end
 end
