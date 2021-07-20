@@ -187,4 +187,39 @@ describe Board do
       expect(checkmate_board).not_to be_checkmate(white)
     end
   end
+
+  describe '#stalemate' do
+    subject(:stalemate_board) { described_class.new }
+    let(:board) { stalemate_board.instance_variable_get(:@board) }
+    before do
+      board[7][7].instance_variable_set(:@piece, black_king)
+      board[6][7].instance_variable_set(:@piece, white_queen)
+      board[7][6].instance_variable_set(:@piece, white_king)
+      allow(black_king).to receive(:possible_moves).and_return([])
+    end
+
+    context 'When black is not in check' do
+      before do
+        allow(stalemate_board).to receive(:check?).with(black).and_return(false)
+      end
+      it 'Returns true when a player is not in check has no legal moves availible' do
+        expect(stalemate_board).to be_stalemate(black)
+      end
+  
+      it 'Returns false if a player has any legal move availible when not in check' do
+        board[1][1].instance_variable_set(:@piece, black_queen)
+        allow(black_queen).to receive(:possible_moves).and_return([[2, 2], [3, 3]])
+        expect(stalemate_board).not_to be_stalemate(black)
+      end
+    end
+
+    it 'Returns false if a player is in check' do
+      white_queen_two = white_queen.clone
+      allow(white_queen_two).to receive(:possible_moves).and_return([7, 7])
+      board[7][1].instance_variable_set(:@piece, white_queen_two)
+      board[1][1].instance_variable_set(:@piece, nil)
+      allow(stalemate_board).to receive(:check?).with(black).and_return(true)
+      expect(stalemate_board).not_to be_stalemate(black)
+    end
+  end
 end

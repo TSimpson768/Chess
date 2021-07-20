@@ -38,9 +38,12 @@ class Board
     true
   end
 
-  # Return true if a stalemate occurs
-  def stalemate?
-    
+  # Return true if player is in stalemate (no legal moves)
+  def stalemate?(player)
+    return false if check?(player)
+
+    moves = list_moves(player, true)[1]
+    moves.empty?
   end
 
   # [[int,int],[int,int]]-> boolean
@@ -61,7 +64,6 @@ class Board
   # Return true if moving from start to end will leave player in check
   # TODO
   def check_after_move?(start_pos, end_pos, player)
-    
   end
 
   # Move the piece on start_place to end place
