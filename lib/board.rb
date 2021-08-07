@@ -7,9 +7,9 @@ class Board
   include Constants
   ROWS = 8
   COLUMNS = 8
-  def initialize
+  def initialize(board = initialize_board)
     # An array of 64 piece objects. Needs to be created in the starting possition for chess.
-    @board = initialize_board
+    @board = board
     @last_moved_piece = nil
   end
 
@@ -33,7 +33,7 @@ class Board
     # Get all legal moves for player
     starts, destinations = list_moves(player, true)
     destinations.each_with_index do |move, index|
-      return false unless check_after_move?(starts[index], move, player)
+      return false unless check_after_move?([starts[index], move], player)
     end
     true
   end
@@ -63,7 +63,11 @@ class Board
 
   # Return true if moving from start to end will leave player in check
   # TODO
-  def check_after_move?(start_pos, end_pos, player)
+  # Clone board
+  # make move
+  # clone.check?
+  def check_after_move?(move, player)
+    
   end
 
   # Move the piece on start_place to end place
