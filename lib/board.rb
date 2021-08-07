@@ -7,10 +7,18 @@ class Board
   include Constants
   ROWS = 8
   COLUMNS = 8
-  def initialize(board = initialize_board)
+  def initialize(board = initialize_board, last_moved_piece = nil)
     # An array of 64 piece objects. Needs to be created in the starting possition for chess.
     @board = board
-    @last_moved_piece = nil
+    @last_moved_piece = last_moved_piece
+  end
+
+  def initialize_copy(original_board)
+    @board = original_board.clone_board
+  end
+
+  def clone_board
+    @board.map { |row| row.map { |place| place.clone } }
   end
 
   attr_reader :last_moved_piece
@@ -70,7 +78,8 @@ class Board
   end
 
   # Move the piece on start_place to end place
-  # Hack?: Does not check legality
+  # Hack?: Does not check legality. Should only execute after checking
+  # move is legal, if called externally?
   def move_piece(move)
     
   end
