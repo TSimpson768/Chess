@@ -62,15 +62,15 @@ class Board
   end
 
   # Return true if moving from start to end will leave player in check
-  # TODO
-  # Clone board
-  # make move
-  # clone.check?
+  # This needs move piece to not check legality
   def check_after_move?(move, player)
-    
+    board_clone = clone
+    board_clone.move_piece(move)
+    board_clone.check?(player)
   end
 
   # Move the piece on start_place to end place
+  # Hack?: Does not check legality
   def move_piece(move)
     
   end

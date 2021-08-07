@@ -94,6 +94,7 @@ describe Board do
     context 'When moving onto a square occupied by an enemy piece' do
       subject(:capture_board) { described_class.new }
       it 'returns true' do
+        allow(capture_board).to receive(:check_after_move?).and_return(false)
         board = capture_board.instance_variable_get(:@board)
         board[4][4].instance_variable_set(:@piece, white_king)
         other_piece = instance_double(Piece)
@@ -159,7 +160,7 @@ describe Board do
       board[7][7].instance_variable_set(:@piece, white_king)
       board[1][3].instance_variable_set(:@piece, black_king)
       board[1][7].instance_variable_set(:@piece, black_queen)
-      allow(checkmate_board).to receive(:check_after_move?).with([7, 7], [6, 6], white_king.owner).and_return(false)
+      allow(checkmate_board).to receive(:check_after_move?).with([[7, 7], [6, 6]], white_king.owner).and_return(false)
       expect(checkmate_board).not_to be_checkmate(white)
     end
 
@@ -175,7 +176,7 @@ describe Board do
       allow(white_rook_two).to receive(:possible_moves).and_return([[1, 1], [0, 1]])
       allow(black_rook).to receive(:possible_moves).and_return([[2, 0], [2, 1]])
       allow(checkmate_board).to receive(:check_after_move?).and_return(true)
-      allow(checkmate_board).to receive(:check_after_move?).with([2, 7], [2, 0], black).and_return(false)
+      allow(checkmate_board).to receive(:check_after_move?).with([[2, 7], [2, 0]], black).and_return(false)
       expect(checkmate_board).not_to be_checkmate(black)
     end
 
@@ -220,6 +221,29 @@ describe Board do
       board[1][1].instance_variable_set(:@piece, nil)
       allow(stalemate_board).to receive(:check?).with(black).and_return(true)
       expect(stalemate_board).not_to be_stalemate(black)
+    end
+  end
+
+  describe '#check_after_move?' do
+    subject(:after_board) { described_class.new }
+    let(:board) { after_board.instance_variable_get(:@board) }
+    before do
+      board[3][3].instance_variable_set(:@piece, white_king)
+      board[7][7].instance_variable_set(:@piece, black_king)
+      board[4][7].instance_variable_set(:@piece, black_queen)
+      allow(white_king).to receive(:possible_moves).and_return([[4, 3], [2, 3]])
+      allow(black_queen).to receive(:possible_moves).and_return([[4, 3]])
+      allow(black_king).to receive(:possible_moves).and_return([[6, 6], [7, 6]])
+      allow(after_board).to receive(:move_piece)
+    end
+    it 'Returns true if player will be in check after a given move' do
+      allow(after_board).to receive(:check?).with(white).and_return(true)
+      expect(after_board).to be_check_after_move([[3, 3], [4, 3]], white)
+    end
+
+    it 'Returns false if player is not in check after a move' do
+      allow(after_board).to receive(:check?).with(white).and_return(false)
+      expect(after_board).not_to be_check_after_move([[3, 3], [2, 3]], white)
     end
   end
 end
