@@ -23,6 +23,7 @@ describe Board do
     allow(black_king).to receive(:owner).and_return(black)
     allow(black_king).to receive(:instance_of?).with(King).and_return(true)
     allow(black_queen).to receive(:owner).and_return(black)
+    allow(default_board).to receive(:check_after_move?).and_return(false)
   end
   matcher :place_equal do
     match { place }
@@ -82,6 +83,7 @@ describe Board do
     context 'When a player attempts to move 2 of their pieces to the same place' do
       subject(:same_place_board) { described_class.new }
       it 'returns false' do
+        allow(same_place_board).to receive(:check_after_move?).and_return(false)
         board = same_place_board.instance_variable_get(:@board)
         board[4][4].instance_variable_set(:@piece, white_king)
         other_piece = instance_double(Piece)
@@ -244,6 +246,18 @@ describe Board do
     it 'Returns false if player is not in check after a move' do
       allow(after_board).to receive(:check?).with(white).and_return(false)
       expect(after_board).not_to be_check_after_move([[3, 3], [2, 3]], white)
+    end
+  end
+  describe '#move_piece' do
+    subject(:move_board) { described_class.new }
+    it 'Moves a piece from start to destination, leaving start empty' do
+      board = move_board.instance_variable_get(:@board)
+      board[1][1].instance_variable_set(:@piece, black_king)
+      board_after_expected = move_board.clone.instance_variable_get(:@board)
+      board_after_expected[1][1].instance_variable_set(:@piece, nil)
+      board_after_expected[2][2].instance_variable_set(:@piece, black_king)
+      move_board.move_piece([[1, 1], [2, 2]])
+      expect(board).to eq(board_after_expected)
     end
   end
 end

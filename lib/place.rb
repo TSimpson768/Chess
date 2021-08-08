@@ -19,4 +19,13 @@ class Place
   def ==(other)
     @piece == other.piece
   end
+  def exit_place
+    piece = @piece
+    @piece = nil
+    piece
+  end
+
+  def enter_place(piece)
+    @piece = piece
+  end
 end

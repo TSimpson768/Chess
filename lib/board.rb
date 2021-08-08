@@ -81,7 +81,10 @@ class Board
   # Hack?: Does not check legality. Should only execute after checking
   # move is legal, if called externally?
   def move_piece(move)
-    
+    start = locate_place(move[0])
+    destination = locate_place(move[1])
+    piece = start.exit_place
+    destination.enter_place(piece)
   end
 
   # Print the board to the console
@@ -111,6 +114,12 @@ class Board
 
   private
 
+  # [int, int] - > place
+  # Returns the place at coords
+  def locate_place(coords)
+    @board[coords[0]][coords[1]]
+  end
+
   def initialize_board
     board = []
     ROWS.times do
@@ -125,7 +134,7 @@ class Board
 
   def print_row(row)
     print '|'
-    row.each {|place| place.print_place}
+    row.each { |place| place.print_place }
     puts ' '
   end
 
