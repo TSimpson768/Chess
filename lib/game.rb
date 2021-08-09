@@ -12,7 +12,15 @@ class Game
   # Main game loop
 
   def play
-    @board.print_board
+    loop do
+      @board.print_board
+      puts "#{@current_player.colour} to move"
+      make_move
+      break if @board.checkmate?(opposing_player) || @board.stalemate?(opposing_player)
+
+      puts 'Check!' if @board.check?(@opposing_player)
+      switch_players
+    end
   end
 
   # Switch current and opposing players
@@ -62,7 +70,7 @@ class Game
     input_array = input.split(//)
     processed_input = input_array.map { |char| process_char(char) }
     destination = processed_input.pop(2)
-    [processed_input, destination]
+    [processed_input.reverse, destination.reverse]
   end
 
   def process_char(char)
@@ -73,4 +81,4 @@ end
 
 
 
-#Game.new.play
+Game.new.play

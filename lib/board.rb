@@ -1,6 +1,8 @@
 # The board class stores the current state of the board.
 require_relative 'place'
 require_relative 'constants'
+require_relative 'pieces/piece'
+require_relative 'pieces/king'
 require 'pry'
 # Might need a module to take the print_methods
 class Board
@@ -63,7 +65,7 @@ class Board
     start = move[0]
     destination = move[1]
     piece = locate_piece(start)
-    return false if !piece || piece.owner != player
+    return false if !piece || piece.owner != player.colour
 
     possible_moves = piece.possible_moves(start, self)
     possible_moves.any? { |reachable_coord| reachable_coord == destination }
@@ -72,6 +74,9 @@ class Board
   # Return true if moving from start to end will leave player in check
   # This needs move piece to not check legality
   def check_after_move?(move, player)
+    p move
+    p player
+    sleep(3)
     board_clone = clone
     board_clone.move_piece(move)
     board_clone.check?(player)
@@ -89,6 +94,7 @@ class Board
 
   # Print the board to the console
   def print_board
+    print_header
     print_divider
     @board.each do |row|
       print_row(row)
@@ -129,6 +135,8 @@ class Board
       end
       board.push(row)
     end
+    board[7][4].enter_place(King.new(BLACK))
+    board[0][4].enter_place(King.new(WHITE))
     board
   end
 
@@ -136,6 +144,10 @@ class Board
     print '|'
     row.each { |place| place.print_place }
     puts ' '
+  end
+
+  def print_header
+    puts ' A   B   C   D   E   F   G   H   '
   end
 
   def print_divider
@@ -159,6 +171,8 @@ class Board
     end
   end
 
+  # TODO: Attacked spaces are all spaces an opponent can move to, regardless
+  # of it putting them in check.
   def list_unsafe_spaces(player)
     list_moves(player, false)[1]
   end

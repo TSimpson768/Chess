@@ -1,6 +1,7 @@
 # The class for a king piece
 require_relative 'piece'
 require_relative '../moveList'
+require_relative '../constants'
 
 class King < Piece
   def initialize(owner)
@@ -11,8 +12,8 @@ class King < Piece
   private
 
   def set_symbol
-    '♔' if @owner.colour == WHITE
-    '♚' if @owner.colour == BLACK
+    '♔' if @owner == WHITE
+    '♚' if @owner == BLACK
   end
 
   def create_moves
