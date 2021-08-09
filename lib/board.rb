@@ -49,6 +49,7 @@ class Board
   end
 
   # Return true if player is in stalemate (no legal moves)
+  # FIXME: Returning true when not in stalemate
   def stalemate?(player)
     return false if check?(player)
 
@@ -158,11 +159,12 @@ class Board
   # Returns two arrays of possible moves.An entry in the first is the starting pos
   # For that move, the entry in the seccond array with the same index is the destinatino
   # HACK :, and mabye shorten function
+  # FIXME: This is not working when trying to get all possible moves for a player
   def list_moves(player, for_player)
     (0..ROWS - 1).each_with_object([[], []]) do |x, attacked_spaces|
       (0..COLUMNS - 1).each_with_object(attacked_spaces) do |y, attacked_spaces|
         piece = locate_piece([y, x])
-        if piece && helper_for_list_moves(player, piece.owner, for_player)
+        if piece && helper_for_list_moves(player.colour, piece.owner, for_player)
           attacked_by_piece = piece.possible_moves([y, x], self)
           attacked_by_piece.length.times { attacked_spaces[0].push([y, x]) }
           attacked_by_piece.each { |attacked_pos| attacked_spaces[1].push(attacked_pos)}
