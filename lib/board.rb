@@ -66,6 +66,7 @@ class Board
     destination = move[1]
     piece = locate_piece(start)
     return false if !piece || piece.owner != player.colour
+    return false if check_after_move?([start, destination], player)
 
     possible_moves = piece.possible_moves(start, self)
     possible_moves.any? { |reachable_coord| reachable_coord == destination }
