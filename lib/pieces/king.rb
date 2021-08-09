@@ -12,8 +12,8 @@ class King < Piece
   private
 
   def set_symbol
-    '♔' if @owner == WHITE
-    '♚' if @owner == BLACK
+    return '♔' if @owner == WHITE
+    return '♚' if @owner == BLACK
   end
 
   def create_moves
