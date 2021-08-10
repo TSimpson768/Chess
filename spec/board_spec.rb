@@ -8,6 +8,19 @@ require '../lib/player'
 require 'yaml'
 describe Board do
   include Constants
+  before do
+    allow_any_instance_of(described_class).to receive(:initialize_board) do
+      board = []
+      8.times do
+        row = []
+        8.times do
+          row.push(Place.new)
+        end
+        board.push(row)
+      end
+      board
+    end
+  end
   let(:white) { instance_double(Player) }
   let(:black) { instance_double(Player) }
   subject(:default_board) { described_class.new(white, black) }
@@ -208,6 +221,7 @@ describe Board do
         allow(stalemate_board).to receive(:check?).with(black).and_return(false)
       end
       it 'Returns true when a player is not in check has no legal moves availible' do
+        binding.pry
         expect(stalemate_board).to be_stalemate(black)
       end
   
