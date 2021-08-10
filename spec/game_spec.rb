@@ -96,7 +96,7 @@ describe Game do
       end
       it 'returns that move' do
         result = game_valid_a.input_move
-        expect(result).to eq([[0, 0], [0, 1]])
+        expect(result).to eq([[0, 0], [1, 0]])
       end
     end
 
@@ -107,7 +107,7 @@ describe Game do
       end
       it 'returns that move do' do
         result = game_valid_b.input_move
-        expect(result).to eq([[1, 2], [2, 3]])
+        expect(result).to eq([[2, 1], [3, 2]])
       end
     end
 
