@@ -9,7 +9,7 @@ class Board
   include Constants
   ROWS = 8
   COLUMNS = 8
-  def initialize(board = initialize_board, last_moved_piece = nil)
+  def initialize(white, black, board = initialize_board(white, black), last_moved_piece = nil)
     # An array of 64 piece objects. Needs to be created in the starting possition for chess.
     @board = board
     @last_moved_piece = last_moved_piece
@@ -65,7 +65,7 @@ class Board
     start = move[0]
     destination = move[1]
     piece = locate_piece(start)
-    return false if !piece || piece.owner != player.colour
+    return false if !piece || piece.owner != player
     return false if check_after_move?([start, destination], player)
 
     possible_moves = piece.possible_moves(start, self)
@@ -128,7 +128,8 @@ class Board
     @board[coords[0]][coords[1]]
   end
 
-  def initialize_board
+  # Player, Player -> 8 * 8 Array of pieces
+  def initialize_board(white, black)
     board = []
     ROWS.times do
       row = []
@@ -137,8 +138,8 @@ class Board
       end
       board.push(row)
     end
-    board[7][4].enter_place(King.new(BLACK))
-    board[0][4].enter_place(King.new(WHITE))
+    board[7][4].enter_place(King.new(black))
+    board[0][4].enter_place(King.new(white))
     board
   end
 
@@ -163,7 +164,7 @@ class Board
     (0..ROWS - 1).each_with_object([[], []]) do |x, attacked_spaces|
       (0..COLUMNS - 1).each_with_object(attacked_spaces) do |y, attacked_spaces|
         piece = locate_piece([y, x])
-        if piece && helper_for_list_moves(player.colour, piece.owner, for_player)
+        if piece && helper_for_list_moves(player, piece.owner, for_player)
           attacked_by_piece = piece.possible_moves([y, x], self)
           attacked_by_piece.length.times { attacked_spaces[0].push([y, x]) }
           attacked_by_piece.each { |attacked_pos| attacked_spaces[1].push(attacked_pos)}

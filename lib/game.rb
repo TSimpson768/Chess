@@ -4,7 +4,7 @@ class Game
   require_relative 'player'
   require_relative 'constants'
   include Constants
-  def initialize(board = Board.new, white = Player.new(WHITE), black = Player.new(BLACK))
+  def initialize(white = Player.new(WHITE), black = Player.new(BLACK), board = Board.new(white, black))
     @board = board
     @current_player = white
     @opposing_player = black
@@ -82,4 +82,4 @@ end
 
 
 
-Game.new.play
+#Game.new.play
