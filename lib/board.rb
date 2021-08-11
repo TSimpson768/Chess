@@ -98,7 +98,8 @@ class Board
   def print_board
     print_header
     print_divider
-    @board.each do |row|
+    @board.each_with_index do |row, index|
+      print "#{index + 1} "
       print_row(row)
       print_divider
     end
@@ -150,11 +151,11 @@ class Board
   end
 
   def print_header
-    puts ' A   B   C   D   E   F   G   H   '
+    puts '    A   B   C   D   E   F   G   H   '
   end
 
   def print_divider
-    puts '================================='
+    puts '==================================='
   end
 
   # Returns two arrays of possible moves.An entry in the first is the starting pos
