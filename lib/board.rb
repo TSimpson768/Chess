@@ -98,8 +98,8 @@ class Board
   def print_board
     print_header
     print_divider
-    @board.each_with_index do |row, index|
-      print "#{index + 1} "
+    @board.reverse.each_with_index do |row, index|
+      print "#{ROWS - index} "
       print_row(row)
       print_divider
     end
