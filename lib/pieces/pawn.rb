@@ -49,6 +49,8 @@ class Pawn < Piece
     capture_moves = [[@move_direction, 1], [@move_direction, -1]]
     capture_moves.each do |move|
       next_move = [pos[0] + move[0], pos[1] + move[1]]
+      next if out_of_bounds?(next_move)
+
       next_piece = board.locate_piece(next_move)
       next unless next_piece
 
@@ -60,6 +62,8 @@ class Pawn < Piece
   def en_passant_moves(pos, board)
     en_passant_targets = [[pos[0], pos[1] - 1], [pos[0], pos[1] + 1]]
     en_passant_targets.each do |target|
+      next if out_of_bounds?(target)
+
       target_piece = board.locate_piece(target)
       return [target[0] + @move_direction, target[1]] if !target_piece.nil? && target_piece == board.last_moved_piece
     end
@@ -74,5 +78,10 @@ class Pawn < Piece
   def set_move_direction
     return 1 if owner.colour == WHITE
     return -1 if owner.colour == BLACK
+  end
+
+  # HACK: Function copy - pasted from moveList class. Needs to be in module?
+  def out_of_bounds?(next_pos)
+    next_pos.any? { |coord| coord < 0 || coord > 7 }
   end
 end
