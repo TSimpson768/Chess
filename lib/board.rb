@@ -3,6 +3,12 @@ require_relative 'place'
 require_relative 'constants'
 require_relative 'pieces/piece'
 require_relative 'pieces/king'
+require_relative 'pieces/queen'
+require_relative 'pieces/rook'
+require_relative 'pieces/bishop'
+require_relative 'pieces/knight'
+require_relative 'pieces/pawn'
+
 require 'pry'
 # Might need a module to take the print_methods
 class Board
@@ -138,8 +144,31 @@ class Board
       end
       board.push(row)
     end
-    board[7][4].enter_place(King.new(black))
+    board[0][0].enter_place(Rook.new(white))
+    board[0][1].enter_place(Knight.new(white))
+    board[0][2].enter_place(Bishop.new(white))
+    board[0][3].enter_place(Queen.new(white))
     board[0][4].enter_place(King.new(white))
+    board[0][5].enter_place(Bishop.new(white))
+    board[0][6].enter_place(Knight.new(white))
+    board[0][7].enter_place(Rook.new(white))
+    board[1].each do |place|
+      piece = Pawn.new(white)
+      place.enter_place(piece)
+    end
+
+    board[6].each do |place|
+      piece = Pawn.new(black)
+      place.enter_place(piece)
+    end
+    board[7][0].enter_place(Rook.new(black))
+    board[7][1].enter_place(Knight.new(black))
+    board[7][2].enter_place(Bishop.new(black))
+    board[7][3].enter_place(Queen.new(black))
+    board[7][4].enter_place(King.new(black))
+    board[7][5].enter_place(Bishop.new(black))
+    board[7][6].enter_place(Knight.new(black))
+    board[7][7].enter_place(Rook.new(black))
     board
   end
 

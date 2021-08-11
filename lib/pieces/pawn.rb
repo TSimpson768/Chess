@@ -25,8 +25,8 @@ class Pawn < Piece
   private
 
   def set_symbol
-    '♙' if @owner.colour == WHITE
-    '♟︎' if @owner.colour == BLACK
+    return '♙' if @owner.colour == WHITE
+    return '♟︎' if @owner.colour == BLACK
   end
 
   def set_moves
