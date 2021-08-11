@@ -16,7 +16,6 @@ class Game
       @board.print_board
       puts "#{@current_player.colour} to move"
       make_move
-      binding.pry
       break if @board.checkmate?(@opposing_player) || @board.stalemate?(@opposing_player)
 
       puts 'Check!' if @board.check?(@opposing_player)
@@ -79,7 +78,3 @@ class Game
     processed_char < 96 ? processed_char - 49 : processed_char - 97
   end
 end
-
-
-
-#Game.new.play

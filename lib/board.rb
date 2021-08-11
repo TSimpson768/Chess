@@ -94,7 +94,6 @@ class Board
   end
 
   # Print the board to the console
-  # FIXME - Prints board with black at bottom
   def print_board
     print_header
     print_divider
