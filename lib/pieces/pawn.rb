@@ -39,9 +39,9 @@ class Pawn < Piece
 
     in_between = [pos[0] + @move_direction, pos[1]]
     destination = [pos[0] + @move_direction * 2, pos[1]]
-    return destination unless board.locate_piece(in_between) && board.locate_piece(destination)
+    return destination unless board.locate_piece(in_between) || board.locate_piece(destination)
 
-    []
+    nil
   end
 
   def captures(pos, board)

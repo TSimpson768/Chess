@@ -21,6 +21,7 @@ class Game
       puts 'Check!' if @board.check?(@opposing_player)
       switch_players
     end
+    game_over
   end
 
   # Switch current and opposing players
@@ -47,7 +48,8 @@ class Game
   
   # Code to run when the game ends
   def game_over 
-    
+    puts 'Game over!'
+    sleep(3)
   end
   
   # Takes a player input if it is valid (correctly formatted? Legal might be in make move)

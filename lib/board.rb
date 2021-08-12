@@ -51,6 +51,7 @@ class Board
     destinations.each_with_index do |move, index|
       return false unless check_after_move?([starts[index], move], player)
     end
+    puts 'Checkmate!'
     true
   end
 
