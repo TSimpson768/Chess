@@ -15,10 +15,11 @@ class Board
   include Constants
   ROWS = 8
   COLUMNS = 8
-  def initialize(white, black, board = initialize_board(white, black), last_moved_piece = nil)
+  def initialize(white, black, board = initialize_board(white, black), en_passant_target = nil)
     # An array of 64 piece objects. Needs to be created in the starting possition for chess.
     @board = board
-    @last_moved_piece = last_moved_piece
+    # [array, array] Location of a piece that can be captured via en-passant
+    @en_passant_target = en_passant_target
   end
 
   def initialize_copy(original_board)
@@ -94,6 +95,7 @@ class Board
     start = locate_place(move[0])
     destination = locate_place(move[1])
     piece = start.exit_place
+    process_en_passant(move, piece, destination)
     destination.enter_place(piece)
   end
 
@@ -215,6 +217,21 @@ class Board
       player == piece_owner
     else
       player != piece_owner
+    end
+  end
+
+  # [int, int], piece, place
+  # Return unless pawn is moving.
+  # If pawn is moving into an empty square, remove ep target
+  # Else if pawn is moving 2 spaces, set as ep target
+  def process_en_passant(move, piece, destination)
+    return unless piece.instance_of?(Pawn)
+
+    if move[0][1] != move[1][1] && destination.piece.nil?
+      locate_place(@en_passant_target).exit_place
+      @en_passant_target = nil
+    elsif abs(move[0][0] - move[1][0]) == 2
+      @en_passant_target == move[0]
     end
   end
 end

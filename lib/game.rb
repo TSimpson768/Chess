@@ -40,7 +40,7 @@ class Game
     loop do
       move = input_move
       break if @board.legal?(move, @current_player)
-      
+
       puts 'Please enter a legal move'
     end
     @board.move_piece(move)

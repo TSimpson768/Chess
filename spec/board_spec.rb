@@ -3,6 +3,7 @@ require '../lib/place'
 require_relative '../lib/pieces/piece'
 require_relative '../lib/pieces/king'
 require_relative '../lib/pieces/queen'
+require_relative '../lib/pieces/pawn'
 require '../lib/constants'
 require '../lib/player'
 require 'yaml'
@@ -33,9 +34,11 @@ describe Board do
     allow(white).to receive(:colour).and_return(:white)
     allow(black).to receive(:colour).and_return(:black)
     allow(white_king).to receive(:owner).and_return(white)
+    allow(white_king).to receive(:instance_of?).with(Pawn).and_return(false)
     allow(white_queen).to receive(:owner).and_return(white)
     allow(black_king).to receive(:owner).and_return(black)
     allow(black_king).to receive(:instance_of?).with(King).and_return(true)
+    allow(black_king).to receive(:instance_of?).with(Pawn).and_return(false)
     allow(black_queen).to receive(:owner).and_return(black)
     allow(default_board).to receive(:check_after_move?).and_return(false)
   end
@@ -221,7 +224,6 @@ describe Board do
         allow(stalemate_board).to receive(:check?).with(black).and_return(false)
       end
       it 'Returns true when a player is not in check has no legal moves availible' do
-        binding.pry
         expect(stalemate_board).to be_stalemate(black)
       end
   
@@ -274,6 +276,25 @@ describe Board do
       board_after_expected[2][2].instance_variable_set(:@piece, black_king)
       move_board.move_piece([[1, 1], [2, 2]])
       expect(board).to eq(board_after_expected)
+    end
+
+    it 'Processes en-passent captures' do
+      board = move_board.instance_variable_get(:@board)
+      white_pawn = instance_double(Pawn)
+      allow(white_pawn).to receive(:owner).and_return(white)
+      allow(white_pawn).to receive(:instance_of?).with(Pawn).and_return(true)
+      black_pawn = instance_double(Pawn)
+      allow(black_pawn).to receive(:owner).and_return(black)
+      allow(black_pawn).to receive(:instance_of?).with(Pawn).and_return(true)
+      board[0][4].instance_variable_set(:@piece, white_pawn)
+      board[1][4].instance_variable_set(:@piece, black_pawn)
+      move_board.instance_variable_set(:@en_passant_target, [0, 4])
+      expected_board = move_board.clone.instance_variable_get(:@board)
+      expected_board[0][4].instance_variable_set(:@piece, nil)
+      expected_board[1][4].instance_variable_set(:@piece, nil)
+      expected_board[0][3].instance_variable_set(:@piece, black_pawn)
+      move_board.move_piece([[1, 4], [0, 3]])
+      expect(board).to eq expected_board
     end
   end
 end
