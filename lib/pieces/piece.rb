@@ -3,9 +3,10 @@ require_relative '../constants'
 # represent each piece. Also needs a pointer to its owner
 class Piece
   include Constants
-  def initialize(owner)
+  def initialize(owner, moved = false)
     @owner = owner
     @symbol = set_symbol
+    @moved = moved
   end
   attr_reader :symbol, :owner
 
@@ -14,6 +15,10 @@ class Piece
   def possible_moves(pos, board)
     moves = @moves.reduce([]) { |all_moves, move| all_moves.push(move.valid_moves(pos, board, @owner)) }
     moves.flatten(1)
+  end
+
+  def moved
+    @moved ||= true
   end
 
   def set_symbol
