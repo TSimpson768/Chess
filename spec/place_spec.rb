@@ -7,10 +7,10 @@ describe Place do
     let(:piece) { instance_double(Piece) }
     subject(:place) { described_class.new(piece) }
     before do
-      allow(piece).to receive(:moved)
+      allow(piece).to receive(:move)
     end
-    it 'calls moved on @piece' do
-      expect(piece).to receive(:moved).once
+    it 'calls move on @piece' do
+      expect(piece).to receive(:move).once
       place.exit_place
     end
 

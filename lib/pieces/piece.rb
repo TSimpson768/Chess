@@ -8,7 +8,7 @@ class Piece
     @symbol = set_symbol
     @moved = moved
   end
-  attr_reader :symbol, :owner
+  attr_reader :symbol, :owner, :moved
 
   # Return an array containing every space on the board this piece can legally move to
   # [int, int], board -> Array of [int, int]
@@ -17,7 +17,7 @@ class Piece
     moves.flatten(1)
   end
 
-  def moved
+  def move
     @moved ||= true
   end
 

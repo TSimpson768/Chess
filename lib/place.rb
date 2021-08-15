@@ -23,7 +23,7 @@ class Place
   def exit_place
     piece = @piece
     @piece = nil
-    piece.moved
+    piece.move
     piece
   end
 
