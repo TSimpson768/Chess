@@ -14,7 +14,7 @@ class MoveList
   def valid_moves(starting_position, board, owner)
     moves = []
     next_pos = [starting_position[0] + @move[0], starting_position[1] + @move[1]]
-    return [] if out_of_bounds?(next_pos)# Needs fixing if moves into check, but can move further?
+    return [] if out_of_bounds?(next_pos)
     return [next_pos] if @sliding == false && board.valid_pos?(next_pos, owner)
 
     loop do
