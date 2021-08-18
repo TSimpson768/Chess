@@ -34,9 +34,10 @@ class King < Piece
   end
 
   # HACK: This can be tided up to only need 1 helper i think
+  # Could this cause infinte check checks again, in a case where both players can castle?
   # Castling moves returns possible castlling moves the king can make
   def castling_moves(pos, board)
-    return if board.check?(@owner) && pos[1] != 4
+    return [] if board.check?(@owner) || pos[1] != 4
 
     home_rank = (0..7).map { |index| board.locate_piece([pos[0], index]) }
     [castle_queenside(home_rank[0..3], pos, board), castle_kingside(home_rank[5..7], pos, board)].compact
@@ -46,13 +47,13 @@ class King < Piece
     rook = qside_pieces[0]
     return unless rook && rook.owner == @owner && !rook.moved
 
-    return [pos[0], 2] unless board.check_after_move?([pos, [pos[0], 3]], owner) && board.check_after_move?([pos, [pos[0], 2]], owner)
+    return [pos[0], 2] unless board.check_after_move?([pos, [pos[0], 3]], owner) || board.check_after_move?([pos, [pos[0], 2]], owner)
   end
 
   def castle_kingside(kside_pieces, pos, board)
     rook = kside_pieces[2]
     return unless rook && rook.owner == @owner && !rook.moved
 
-    return [pos[0], 6] unless board.check_after_move?([pos, [pos[0], 5]], owner) && board.check_after_move?([pos, [pos[0], 6]], owner)
+    return [pos[0], 6] unless board.check_after_move?([pos, [pos[0], 5]], owner) || board.check_after_move?([pos, [pos[0], 6]], owner)
   end
 end

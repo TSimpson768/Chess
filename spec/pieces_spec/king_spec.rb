@@ -37,22 +37,44 @@ describe King do
 
     end
     it 'Returns the castling moves if the king has not moved, and both of a players rooks have not moved' do
+      allow(castle_board).to receive(:check_after_move?)
       starting_position = [0, 4]
       expected_result = [[0, 2], [0, 3], [1, 3], [1, 4], [1, 5], [0, 5], [0, 6]].sort
       result = king.possible_moves(starting_position, castle_board).sort
       expect(result).to eq(expected_result)
     end
 
-    xit 'Does not return a castling move if the king has to move through an attacked space' do
-      
+    it 'Does not return a castling move if the king has to move through an attacked space' do
+      starting_position = [0, 4]
+      expected_result = [[0, 2], [0, 3], [1, 3], [1, 4], [1, 5], [0, 5]].sort
+      allow(castle_board).to receive(:check_after_move?)
+      allow(castle_board).to receive(:check_after_move?).with([starting_position, [0, 5]], player).and_return(true)
+      result = king.possible_moves(starting_position, castle_board).sort
+      expect(result).to eq(expected_result)
     end
 
-    xit 'Only returns normal moves if king has previously moved' do
-      
+    it 'Only returns normal moves if king has previously moved' do
+      starting_position = [0, 4]
+      expected_result = [[0, 3], [1, 3], [1, 4], [1, 5], [0, 5]].sort
+      king.instance_variable_set(:@moved, true)
+      result = king.possible_moves(starting_position, castle_board).sort
+      expect(result).to eq(expected_result)
     end
 
-    xit 'Returns only normal moves if king is in check, but castling is otherwise possible' do
-      
+    it 'Returns only normal moves if king is in check, but castling is otherwise possible' do
+      starting_position = [0, 4]
+      expected_result = [[0, 3], [1, 3], [1, 4], [1, 5], [0, 5]].sort
+      allow(castle_board).to receive(:check?).and_return(true)
+      result = king.possible_moves(starting_position, castle_board).sort
+      expect(result).to eq(expected_result)
+    end
+
+    it 'Does not return a castle move if that rook has previously moved' do
+      starting_position = [0, 4]
+      expected_result = [[0, 3], [1, 3], [1, 4], [1, 5], [0, 5], [0, 6]].sort
+      allow(qside_rook).to receive(:moved).and_return(true)
+      result = king.possible_moves(starting_position, castle_board).sort
+      expect(result).to eq(expected_result)
     end
   end
 end
