@@ -32,6 +32,8 @@ describe King do
       allow(castle_board).to receive(:check_after_move?)
       allow(qside_rook).to receive(:owner).and_return(player)
       allow(qside_rook).to receive(:moved).and_return(false)
+      allow(kside_rook).to receive(:owner).and_return(player)
+      allow(kside_rook).to receive(:moved).and_return(false)
 
     end
     it 'Returns the castling moves if the king has not moved, and both of a players rooks have not moved' do

@@ -33,7 +33,7 @@ class King < Piece
      MoveList.new([1, -1]), MoveList.new([-1, -1])]
   end
 
-  # HACK: Kinda spaghetti
+  # HACK: This can be tided up to only need 1 helper i think
   # Castling moves returns possible castlling moves the king can make
   def castling_moves(pos, board)
     return if board.check?(@owner) && pos[1] != 4
@@ -49,8 +49,10 @@ class King < Piece
     return [pos[0], 2] unless board.check_after_move?([pos, [pos[0], 3]], owner) && board.check_after_move?([pos, [pos[0], 2]], owner)
   end
 
-
   def castle_kingside(kside_pieces, pos, board)
-    
+    rook = kside_pieces[2]
+    return unless rook && rook.owner == @owner && !rook.moved
+
+    return [pos[0], 6] unless board.check_after_move?([pos, [pos[0], 5]], owner) && board.check_after_move?([pos, [pos[0], 6]], owner)
   end
 end
