@@ -96,6 +96,7 @@ class Board
     destination = locate_place(move[1])
     piece = start.exit_place
     process_en_passant(move, piece, destination)
+    process_castling(move, piece)
     destination.enter_place(piece)
   end
 
@@ -232,6 +233,18 @@ class Board
       @en_passant_target = nil
     elsif abs(move[0][0] - move[1][0]) == 2
       @en_passant_target == move[0]
+    end
+  end
+
+  def process_castling(move, piece)
+    return unless piece.instance_of?(King) && !piece.moved && (move[0][1] - move[1][1]).abs == 2
+
+    if move[1][1] == 2
+      rook = locate_place([move[0][0], 0]).exit_place
+      locate_place([move[0][0], 3]).enter_place(rook)
+    elsif move[1][1] == 6
+      rook = locate_place([move[0][0], 8]).exit_place
+      locate_place([move[0][0], 5]).enter_place(rook)
     end
   end
 end

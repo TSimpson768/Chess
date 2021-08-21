@@ -301,5 +301,25 @@ describe Board do
       move_board.move_piece([[1, 4], [0, 3]])
       expect(board).to eq expected_board
     end
+
+    it 'Processes castling correctly' do
+      board = move_board.instance_variable_get(:@board)
+      white_rook = instance_double(Rook)
+      allow(white_rook).to receive(:owner).and_return(white)
+      allow(white_rook).to receive(:move)
+      allow(white_rook).to receive(:moved)
+      allow(white_king).to receive(:instance_of?).with(King).and_return(true)
+      allow(white_king).to receive(:move)
+      allow(white_king).to receive(:moved)
+      board[0][0].instance_variable_set(:@piece, white_rook)
+      board[0][4].instance_variable_set(:@piece, white_king)
+      expected_board = move_board.clone.instance_variable_get(:@board)
+      expected_board[0][4].instance_variable_set(:@piece, nil)
+      expected_board[0][0].instance_variable_set(:@piece, nil)
+      expected_board[0][2].instance_variable_set(:@piece, white_king)
+      expected_board[0][3].instance_variable_set(:@piece, white_rook)
+      move_board.move_piece([[0, 4], [0, 2]])
+      expect(board).to eq(expected_board)
+    end
   end
 end
