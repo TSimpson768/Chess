@@ -47,13 +47,16 @@ class King < Piece
     rook = qside_pieces[0]
     return unless rook && rook.owner == @owner && !rook.moved
 
-    return [pos[0], 2] unless board.check_after_move?([pos, [pos[0], 3]], owner) || board.check_after_move?([pos, [pos[0], 2]], owner)
+    puts 'Can I castle?'
+    unsafe = board.list_unsafe_spaces(owner)
+    return [pos[0], 2] unless unsafe.member?([pos[0], 2]) || unsafe.member?([pos[0], 3])
   end
 
   def castle_kingside(kside_pieces, pos, board)
     rook = kside_pieces[2]
     return unless rook && rook.owner == @owner && !rook.moved
 
-    return [pos[0], 6] unless board.check_after_move?([pos, [pos[0], 5]], owner) || board.check_after_move?([pos, [pos[0], 6]], owner)
+    unsafe = board.list_unsafe_spaces(owner)
+    return [pos[0], 6] unless unsafe.member?([pos[0], 5]) || unsafe.member?([pos[0], 6])
   end
 end

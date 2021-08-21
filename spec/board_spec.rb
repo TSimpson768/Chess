@@ -336,7 +336,7 @@ describe Board do
       allow(white_pawn).to receive(:promote)
       board[0][6].instance_variable_set(:@piece, white_pawn)
       expect(white_pawn).to receive(:promote).once
-      move_board.move_piece([[0, 6], [0, 7]])
+      move_board.move_piece([[6, 0], [7, 0]])
     end
   end
 end

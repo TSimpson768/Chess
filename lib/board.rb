@@ -97,7 +97,7 @@ class Board
     piece = start.exit_place
     process_en_passant(move, piece, destination)
     process_castling(move, piece)
-    piece = piece.promote if piece.instance_of?(Pawn) && (move[1][1].zero? || move[1][1] == 7)
+    piece = piece.promote if piece.instance_of?(Pawn) && (move[1][0].zero? || move[1][0] == 7)
     destination.enter_place(piece)
   end
 
@@ -126,6 +126,12 @@ class Board
     return true if piece.nil? || piece.owner != owner
 
     false
+  end
+
+  # TODO: Attacked spaces are all spaces an opponent can move to, regardless
+  # of it putting them in check.
+  def list_unsafe_spaces(player)
+    list_moves(player, false)[1]
   end
 
   private
@@ -205,11 +211,7 @@ class Board
     end
   end
 
-  # TODO: Attacked spaces are all spaces an opponent can move to, regardless
-  # of it putting them in check.
-  def list_unsafe_spaces(player)
-    list_moves(player, false)[1]
-  end
+
 
   # Player, player, bool
   # If equal == true, return result of player == piece_owner
