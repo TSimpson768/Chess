@@ -3,8 +3,8 @@ require_relative '../moveList'
 
 # A chess knight
 class Knight < Piece
-  def initialize(owner)
-    super(owner)
+  def initialize(owner, moved = false)
+    super(owner, moved)
     @moves = [MoveList.new([2, 1]), MoveList.new([2, -1]), MoveList.new([1, 2]),
               MoveList.new([-1, 2]), MoveList.new([1, -2]), MoveList.new([-1, -2]),
               MoveList.new([-2, 1]), MoveList.new([-2, -1])]

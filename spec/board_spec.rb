@@ -36,11 +36,13 @@ describe Board do
     allow(white_king).to receive(:owner).and_return(white)
     allow(white_king).to receive(:instance_of?).with(Pawn).and_return(false)
     allow(white_king).to receive(:move)
+    allow(white_king).to receive(:moved)
     allow(white_queen).to receive(:owner).and_return(white)
     allow(black_king).to receive(:owner).and_return(black)
     allow(black_king).to receive(:instance_of?).with(King).and_return(true)
     allow(black_king).to receive(:instance_of?).with(Pawn).and_return(false)
     allow(black_king).to receive(:move)
+    allow(black_king).to receive(:moved)
     allow(black_queen).to receive(:owner).and_return(black)
     allow(default_board).to receive(:check_after_move?).and_return(false)
   end
@@ -285,10 +287,12 @@ describe Board do
       board = move_board.instance_variable_get(:@board)
       white_pawn = instance_double(Pawn)
       allow(white_pawn).to receive(:owner).and_return(white)
+      allow(white_pawn).to receive(:instance_of?)
       allow(white_pawn).to receive(:instance_of?).with(Pawn).and_return(true)
       allow(white_pawn).to receive(:move)
       black_pawn = instance_double(Pawn)
       allow(black_pawn).to receive(:owner).and_return(black)
+      allow(black_pawn).to receive(:instance_of?)
       allow(black_pawn).to receive(:instance_of?).with(Pawn).and_return(true)
       allow(black_pawn).to receive(:move)
       board[0][4].instance_variable_set(:@piece, white_pawn)
@@ -320,6 +324,19 @@ describe Board do
       expected_board[0][3].instance_variable_set(:@piece, white_rook)
       move_board.move_piece([[0, 4], [0, 2]])
       expect(board).to eq(expected_board)
+    end
+
+    it 'calls promote on the piece if its a pawn, and moving into rank 1 or 8' do
+      board = move_board.instance_variable_get(:@board)
+      white_pawn = instance_double(Pawn)
+      allow(white_pawn).to receive(:owner).and_return(white)
+      allow(white_pawn).to receive(:instance_of?)
+      allow(white_pawn).to receive(:instance_of?).with(Pawn).and_return(true)
+      allow(white_pawn).to receive(:move)
+      allow(white_pawn).to receive(:promote)
+      board[0][6].instance_variable_set(:@piece, white_pawn)
+      expect(white_pawn).to receive(:promote).once
+      move_board.move_piece([[0, 6], [0, 7]])
     end
   end
 end

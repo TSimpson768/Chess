@@ -3,14 +3,18 @@ require_relative '../../lib/player'
 require_relative '../../lib/board'
 
 describe Pawn do
+  let(:white) { instance_double(Player) }
+  let(:black) { instance_double(Player) }
+  before do
+    allow(white).to receive(:colour).and_return(:white)
+    allow(black).to receive(:colour).and_return(:black)
+  end
 
   describe '#possible_moves' do
-    let(:white) { instance_double(Player) }
-    let(:black) { instance_double(Player) }
+
     let(:empty_board) { instance_double(Board) }
     before do
-      allow(white).to receive(:colour).and_return(:white)
-      allow(black).to receive(:colour).and_return(:black)
+
       allow(empty_board).to receive(:valid_pos?).and_return(true)
       allow(empty_board).to receive(:check_after_move?).and_return(false)
       allow(empty_board).to receive(:locate_piece).and_return(nil)
@@ -111,6 +115,36 @@ describe Pawn do
         result = black_pawn.possible_moves(pos, empty_board)
         expect(result).to be_empty
       end
+    end
+  end
+
+  describe '#promote' do
+    subject(:pawn) { described_class.new(white) }
+    before do
+      allow(pawn).to receive(:puts)
+    end
+    it 'Returns a new queen if q is input' do
+      allow(pawn).to receive(:input_promotion).and_return('Q')
+      piece = pawn.promote
+      expect(piece).to be_instance_of(Queen)
+    end
+
+    it 'Returns a new knight if k is input' do
+      allow(pawn).to receive(:input_promotion).and_return('K')
+      piece = pawn.promote
+      expect(piece).to be_instance_of(Knight)
+    end
+
+    it 'Returns a new rook if r is input' do
+      allow(pawn).to receive(:input_promotion).and_return('R')
+      piece = pawn.promote
+      expect(piece).to be_instance_of(Rook)
+    end
+
+    it 'Returns a new Bishop if b is input' do
+      allow(pawn).to receive(:input_promotion).and_return('B')
+      piece = pawn.promote
+      expect(piece).to be_instance_of(Bishop)
     end
   end
 end

@@ -3,8 +3,8 @@ require_relative '../moveList'
 
 # A chess bishop
 class Bishop < Piece
-  def initialize(owner)
-    super(owner)
+  def initialize(owner, moved = false)
+    super(owner, moved)
     @moves = [MoveList.new([1, 1], true), MoveList.new([1, -1], true), MoveList.new([-1, 1], true),
               MoveList.new([-1, -1], true)]
   end

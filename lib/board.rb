@@ -97,6 +97,7 @@ class Board
     piece = start.exit_place
     process_en_passant(move, piece, destination)
     process_castling(move, piece)
+    piece = piece.promote if piece.instance_of?(Pawn) && (move[1][1].zero? || move[1][1] == 7)
     destination.enter_place(piece)
   end
 
@@ -226,7 +227,7 @@ class Board
   # If pawn is moving into an empty square, remove ep target
   # Else if pawn is moving 2 spaces, set as ep target
   def process_en_passant(move, piece, destination)
-    return unless piece.instance_of?(Pawn)
+    return unless piece.instance_of?(Pawn) && @en_passant_target
 
     if move[0][1] != move[1][1] && destination.piece.nil?
       locate_place(@en_passant_target).exit_place
