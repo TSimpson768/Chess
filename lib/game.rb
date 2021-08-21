@@ -3,6 +3,8 @@ class Game
   require_relative 'board'
   require_relative 'player'
   require_relative 'constants'
+  require_relative 'saves'
+  include Saves
   include Constants
   def initialize(white = Player.new(WHITE), black = Player.new(BLACK), board = Board.new(white, black))
     @board = board
@@ -60,6 +62,10 @@ class Game
       input = gets.chomp.downcase
       break if move_regex.match?(input)
 
+      if /[Ss]/.match?(input)
+        save_game
+        next
+      end
       puts "I don't understand that. Please input a move in format [starting square][destination]
  I.e. to move the piece at A1 to D4, type A1D4"
     end
