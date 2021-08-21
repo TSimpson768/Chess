@@ -11,6 +11,7 @@ class Game
     @current_player = white
     @opposing_player = black
   end
+
   # Main game loop
 
   def play
@@ -47,13 +48,13 @@ class Game
     end
     @board.move_piece(move)
   end
-  
+
   # Code to run when the game ends
-  def game_over 
+  def game_over
     puts 'Game over!'
     sleep(3)
   end
-  
+
   # Takes a player input if it is valid (correctly formatted? Legal might be in make move)
   def input_move
     move_regex = /[a-h][1-8][a-h][1-8]/

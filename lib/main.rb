@@ -1,3 +1,4 @@
 require_relative 'game'
+require_relative 'menu'
 
-Game.new.play
+Menu.new.main_menu
