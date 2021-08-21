@@ -20,6 +20,10 @@ class Place
     @piece == other.piece
   end
 
+  def clone
+    Place.new(@piece.clone)
+  end
+
   def exit_place
     piece = @piece
     @piece = nil

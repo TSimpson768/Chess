@@ -70,12 +70,15 @@ class Board
   # 2 - Starting from the start_place, perform a search (Depth or breath first? idk)
   # return true if an unobstructed path to end place is found. 
   def legal?(move, player)
+    puts "Legal #{player.colour}"
     start = move[0]
     destination = move[1]
     piece = locate_piece(start)
     return false if !piece || piece.owner != player
     return false if check_after_move?([start, destination], player)
+    return false if piece.instance_of?(King) && (start[1] - destination[1]).abs == 2 && check_after_move?([start, [start[0], (start[1] + destination[1])/2]], player)
 
+    puts 'here'
     possible_moves = piece.possible_moves(start, self)
     possible_moves.any? { |reachable_coord| reachable_coord == destination }
   end
@@ -83,6 +86,7 @@ class Board
   # Return true if moving from start to end will leave player in check
   # This needs move piece to not check legality
   def check_after_move?(move, player)
+    puts move
     board_clone = clone
     board_clone.move_piece(move)
     board_clone.check?(player)
@@ -240,13 +244,13 @@ class Board
   end
 
   def process_castling(move, piece)
-    return unless piece.instance_of?(King) && !piece.moved && (move[0][1] - move[1][1]).abs == 2
+    return unless piece.instance_of?(King) && (move[0][1] - move[1][1]).abs == 2
 
     if move[1][1] == 2
       rook = locate_place([move[0][0], 0]).exit_place
       locate_place([move[0][0], 3]).enter_place(rook)
     elsif move[1][1] == 6
-      rook = locate_place([move[0][0], 8]).exit_place
+      rook = locate_place([move[0][0], 7]).exit_place
       locate_place([move[0][0], 5]).enter_place(rook)
     end
   end

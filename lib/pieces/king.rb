@@ -36,8 +36,9 @@ class King < Piece
   # HACK: This can be tided up to only need 1 helper i think
   # Could this cause infinte check checks again, in a case where both players can castle?
   # Castling moves returns possible castlling moves the king can make
+  # Calling check? is causing that little fuck up again
   def castling_moves(pos, board)
-    return [] if board.check?(@owner) || pos[1] != 4
+    return [] if @owner.check || pos[1] != 4
 
     home_rank = (0..7).map { |index| board.locate_piece([pos[0], index]) }
     [castle_queenside(home_rank[0..3], pos, board), castle_kingside(home_rank[5..7], pos, board)].compact
@@ -47,16 +48,15 @@ class King < Piece
     rook = qside_pieces[0]
     return unless rook && rook.owner == @owner && !rook.moved
 
-    puts 'Can I castle?'
-    unsafe = board.list_unsafe_spaces(owner)
-    return [pos[0], 2] unless unsafe.member?([pos[0], 2]) || unsafe.member?([pos[0], 3])
+    #unsafe = board.list_unsafe_spaces(@owner)
+    return [pos[0], 2] #unless unsafe.member?([pos[0], 3])
   end
 
   def castle_kingside(kside_pieces, pos, board)
     rook = kside_pieces[2]
     return unless rook && rook.owner == @owner && !rook.moved
 
-    unsafe = board.list_unsafe_spaces(owner)
-    return [pos[0], 6] unless unsafe.member?([pos[0], 5]) || unsafe.member?([pos[0], 6])
+    #unsafe = board.list_unsafe_spaces(@owner)
+    return [pos[0], 6] #unless unsafe.member?([pos[0], 5])
   end
 end

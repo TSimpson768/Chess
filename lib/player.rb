@@ -6,4 +6,5 @@ class Player
     @colour = colour
   end
   attr_reader :colour
+  attr_accessor :check
 end

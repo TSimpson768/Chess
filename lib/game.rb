@@ -21,10 +21,18 @@ class Game
       make_move
       break if @board.checkmate?(@opposing_player) || @board.stalemate?(@opposing_player)
 
-      puts 'Check!' if @board.check?(@opposing_player)
+      manage_check
       switch_players
     end
     game_over
+  end
+
+  def manage_check
+    @current_player.check = false
+    if @board.check?(@opposing_player)
+      puts 'Check!'
+      @opposing_player.check = true
+    end
   end
 
   # Switch current and opposing players
