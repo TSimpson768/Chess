@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The game class is in charge of controlling the flow of the game
 class Game
   require_relative 'board'

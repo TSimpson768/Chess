@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../lib/place'
 require_relative '../lib/pieces/piece'
 require_relative '../lib/player'

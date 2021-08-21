@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 # The class for a king piece
 require_relative 'piece'
 require_relative '../moveList'
 require_relative '../constants'
 
-# TODO - Implement castling move checks
+# TODO: - Implement castling move checks
 class King < Piece
   def initialize(owner)
     super(owner)
@@ -44,19 +46,19 @@ class King < Piece
     [castle_queenside(home_rank[0..3], pos, board), castle_kingside(home_rank[5..7], pos, board)].compact
   end
 
-  def castle_queenside(qside_pieces, pos, board)
+  def castle_queenside(qside_pieces, pos, _board)
     rook = qside_pieces[0]
     return unless rook && rook.owner == @owner && !rook.moved
 
-    #unsafe = board.list_unsafe_spaces(@owner)
-    return [pos[0], 2] #unless unsafe.member?([pos[0], 3])
+    # unsafe = board.list_unsafe_spaces(@owner)
+    [pos[0], 2] # unless unsafe.member?([pos[0], 3])
   end
 
-  def castle_kingside(kside_pieces, pos, board)
+  def castle_kingside(kside_pieces, pos, _board)
     rook = kside_pieces[2]
     return unless rook && rook.owner == @owner && !rook.moved
 
-    #unsafe = board.list_unsafe_spaces(@owner)
-    return [pos[0], 6] #unless unsafe.member?([pos[0], 5])
+    # unsafe = board.list_unsafe_spaces(@owner)
+    [pos[0], 6] # unless unsafe.member?([pos[0], 5])
   end
 end

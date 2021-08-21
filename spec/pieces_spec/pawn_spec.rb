@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../lib/pieces/pawn'
 require_relative '../../lib/player'
 require_relative '../../lib/board'
@@ -11,10 +13,8 @@ describe Pawn do
   end
 
   describe '#possible_moves' do
-
     let(:empty_board) { instance_double(Board) }
     before do
-
       allow(empty_board).to receive(:valid_pos?).and_return(true)
       allow(empty_board).to receive(:check_after_move?).and_return(false)
       allow(empty_board).to receive(:locate_piece).and_return(nil)
@@ -99,7 +99,7 @@ describe Pawn do
         result = black_pawn.possible_moves(pos, empty_board).sort
         expect(result).to eq(expected_result)
       end
-  
+
       it 'Can capture an opposing pawn that has just moved 2 places on passent' do
         pos = [3, 3]
         allow(empty_board).to receive(:locate_piece).with([3, 4]).and_return(white_pawn)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require '../lib/board'
 require '../lib/place'
 require_relative '../lib/pieces/piece'
@@ -66,7 +68,7 @@ describe Board do
   end
 
   describe '#legal?' do
-    white =  Player.new(:white)
+    white = Player.new(:white)
     white_king = King.new(white)
     black = Player.new(:black)
     black_king  = King.new(black)
@@ -123,7 +125,7 @@ describe Board do
         board[4][4].instance_variable_set(:@piece, white_king)
         other_piece = instance_double(Piece)
         allow(other_piece).to receive(:owner).and_return(black)
-        allow(other_piece).to receive(:possible_moves).and_return([[5,5]])
+        allow(other_piece).to receive(:possible_moves).and_return([[5, 5]])
         board[4][5].instance_variable_set(:@piece, other_piece)
         expect(capture_board).to be_legal([[4, 4], [4, 5]], white)
       end
@@ -231,7 +233,7 @@ describe Board do
       it 'Returns true when a player is not in check has no legal moves availible' do
         expect(stalemate_board).to be_stalemate(black)
       end
-  
+
       it 'Returns false if a player has any legal move availible when not in check' do
         board[1][1].instance_variable_set(:@piece, black_queen)
         allow(black_queen).to receive(:possible_moves).and_return([[2, 2], [3, 3]])

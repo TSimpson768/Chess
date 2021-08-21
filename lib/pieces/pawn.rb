@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'pry'
 require_relative 'piece'
 require_relative '../moveList'
@@ -98,7 +100,7 @@ class Pawn < Piece
 
   # HACK: Function copy - pasted from moveList class. Needs to be in module?
   def out_of_bounds?(next_pos)
-    next_pos.any? { |coord| coord < 0 || coord > 7 }
+    next_pos.any? { |coord| coord.negative? || coord > 7 }
   end
 
   def input_promotion

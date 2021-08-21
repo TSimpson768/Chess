@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The board class stores the current state of the board.
 require_relative 'place'
 require_relative 'constants'
@@ -27,7 +29,7 @@ class Board
   end
 
   def clone_board
-    @board.map { |row| row.map { |place| place.clone } }
+    @board.map { |row| row.map(&:clone) }
   end
 
   attr_reader :last_moved_piece
@@ -68,7 +70,7 @@ class Board
   # Retrun true if the move from start_place to end place is legal. Else, return false
   # Plan 1 - is start place owned by the current player? return false if false
   # 2 - Starting from the start_place, perform a search (Depth or breath first? idk)
-  # return true if an unobstructed path to end place is found. 
+  # return true if an unobstructed path to end place is found.
   def legal?(move, player)
     puts "Legal #{player.colour}"
     start = move[0]
@@ -76,7 +78,9 @@ class Board
     piece = locate_piece(start)
     return false if !piece || piece.owner != player
     return false if check_after_move?([start, destination], player)
-    return false if piece.instance_of?(King) && (start[1] - destination[1]).abs == 2 && check_after_move?([start, [start[0], (start[1] + destination[1])/2]], player)
+    return false if piece.instance_of?(King) && (start[1] - destination[1]).abs == 2 && check_after_move?(
+      [start, [start[0], (start[1] + destination[1]) / 2]], player
+    )
 
     puts 'here'
     possible_moves = piece.possible_moves(start, self)
@@ -186,7 +190,7 @@ class Board
 
   def print_row(row)
     print '|'
-    row.each { |place| place.print_place }
+    row.each(&:print_place)
     puts ' '
   end
 
@@ -208,14 +212,12 @@ class Board
         if piece && helper_for_list_moves(player, piece.owner, for_player)
           attacked_by_piece = piece.possible_moves([y, x], self)
           attacked_by_piece.length.times { attacked_spaces[0].push([y, x]) }
-          attacked_by_piece.each { |attacked_pos| attacked_spaces[1].push(attacked_pos)}
+          attacked_by_piece.each { |attacked_pos| attacked_spaces[1].push(attacked_pos) }
         end
         attacked_spaces
       end
     end
   end
-
-
 
   # Player, player, bool
   # If equal == true, return result of player == piece_owner
@@ -246,13 +248,13 @@ class Board
   def process_castling(move, piece)
     return unless piece.instance_of?(King) && (move[0][1] - move[1][1]).abs == 2
 
-    if move[1][1] == 2
+    case move[1][1]
+    when 2
       rook = locate_place([move[0][0], 0]).exit_place
       locate_place([move[0][0], 3]).enter_place(rook)
-    elsif move[1][1] == 6
+    when 6
       rook = locate_place([move[0][0], 7]).exit_place
       locate_place([move[0][0], 5]).enter_place(rook)
     end
   end
 end
-

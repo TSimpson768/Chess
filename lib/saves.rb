@@ -24,7 +24,7 @@ module Saves
   def read_save
     file_name = input_save_name
     save = File.open(file_name, 'r')
-    save_json = YAML.load(save.read)
+    save_json = YAML.safe_load(save.read)
     save.close
     save_json
   end

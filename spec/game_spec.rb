@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require '../lib/game'
 describe Game do
   subject(:game_default) { described_class.new }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../lib/pieces/king'
 require_relative '../../lib/player'
 
@@ -34,7 +36,6 @@ describe King do
       allow(qside_rook).to receive(:moved).and_return(false)
       allow(kside_rook).to receive(:owner).and_return(player)
       allow(kside_rook).to receive(:moved).and_return(false)
-
     end
     it 'Returns the castling moves if the king has not moved, and both of a players rooks have not moved' do
       allow(castle_board).to receive(:check_after_move?)

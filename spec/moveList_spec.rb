@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require '../lib/moveList'
 require '../lib/player'
 require '../lib/board'

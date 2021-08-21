@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'pry'
 # Movelist starts with a posible move, and wether or not that move is
 # sliding (like a rook, bishop or queen)
@@ -35,6 +37,6 @@ class MoveList
   private
 
   def out_of_bounds?(next_pos)
-    next_pos.any? { |coord| coord < 0 || coord > 7 }
+    next_pos.any? { |coord| coord.negative? || coord > 7 }
   end
 end

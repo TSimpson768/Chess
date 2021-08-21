@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../lib/pieces/piece'
 
 describe Piece do
@@ -23,6 +25,5 @@ describe Piece do
         expect(has_moved).to eq true
       end
     end
-    
   end
 end
