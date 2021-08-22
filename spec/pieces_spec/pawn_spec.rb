@@ -60,7 +60,7 @@ describe Pawn do
       it 'Can capture an opposing pawn that has just moved 2 places en passant' do
         pos = [4, 2]
         allow(empty_board).to receive(:locate_piece).with([4, 3]).and_return(black_pawn)
-        allow(empty_board).to receive(:en_passant_target).and_return(black_pawn)
+        allow(empty_board).to receive(:en_passant_target).and_return([4, 3])
 
         expected_result = [[5, 2], [5, 3]]
         result = white_pawn.possible_moves(pos, empty_board)
@@ -103,7 +103,7 @@ describe Pawn do
       it 'Can capture an opposing pawn that has just moved 2 places en passant' do
         pos = [3, 3]
         allow(empty_board).to receive(:locate_piece).with([3, 4]).and_return(white_pawn)
-        allow(empty_board).to receive(:en_passant_target).and_return(white_pawn)
+        allow(empty_board).to receive(:en_passant_target).and_return([3, 4])
         expected_result = [[2, 3], [2, 4]]
         result = black_pawn.possible_moves(pos, empty_board)
         expect(result).to eq(expected_result)
