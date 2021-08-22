@@ -299,7 +299,7 @@ describe Board do
       allow(black_pawn).to receive(:move)
       board[4][3].instance_variable_set(:@piece, white_pawn)
       board[4][4].instance_variable_set(:@piece, black_pawn)
-      move_board.instance_variable_set(:@en_passant_target, [3, 4])
+      move_board.instance_variable_set(:@en_passant_target, [4, 3])
       expected_board = move_board.clone.instance_variable_get(:@board)
       expected_board[4][3].instance_variable_set(:@piece, nil)
       expected_board[4][4].instance_variable_set(:@piece, nil)
@@ -336,7 +336,7 @@ describe Board do
       allow(white_pawn).to receive(:instance_of?).with(Pawn).and_return(true)
       allow(white_pawn).to receive(:move)
       allow(white_pawn).to receive(:promote)
-      board[0][6].instance_variable_set(:@piece, white_pawn)
+      board[6][0].instance_variable_set(:@piece, white_pawn)
       expect(white_pawn).to receive(:promote).once
       move_board.move_piece([[6, 0], [7, 0]])
     end
