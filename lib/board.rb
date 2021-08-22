@@ -84,6 +84,7 @@ class Board
 
     puts 'here'
     possible_moves = piece.possible_moves(start, self)
+    binding.pry
     possible_moves.any? { |reachable_coord| reachable_coord == destination }
   end
 
@@ -235,13 +236,13 @@ class Board
   # If pawn is moving into an empty square, remove ep target
   # Else if pawn is moving 2 spaces, set as ep target
   def process_en_passant(move, piece, destination)
-    return unless piece.instance_of?(Pawn) && @en_passant_target
+    return unless piece.instance_of?(Pawn)
 
-    if move[0][1] != move[1][1] && destination.piece.nil?
+    if @en_passant_target && move[0][1] != move[1][1] && destination.piece.nil?
       locate_place(@en_passant_target).exit_place
       @en_passant_target = nil
-    elsif abs(move[0][0] - move[1][0]) == 2
-      @en_passant_target == move[0]
+    elsif (move[0][0] - move[1][0]).abs == 2
+      @en_passant_target == move[1]
     end
   end
 

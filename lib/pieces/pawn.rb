@@ -83,7 +83,7 @@ class Pawn < Piece
       next if out_of_bounds?(target)
 
       target_piece = board.locate_piece(target)
-      return [target[0] + @move_direction, target[1]] if !target_piece.nil? && target_piece == board.en_passant_target
+      return [target[0] + @move_direction, target[1]] if !target_piece.nil? && target == board.en_passant_target
     end
     nil
   end
