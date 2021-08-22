@@ -63,7 +63,10 @@ class Board
     return false if check?(player)
 
     moves = list_moves(player, true)[1]
-    moves.empty?
+    return unless moves.empty?
+
+    puts 'Stalemate - Its a draw!'
+    true
   end
 
   # [[int,int],[int,int]]-> boolean
@@ -84,7 +87,6 @@ class Board
 
     puts 'here'
     possible_moves = piece.possible_moves(start, self)
-    binding.pry
     possible_moves.any? { |reachable_coord| reachable_coord == destination }
   end
 
