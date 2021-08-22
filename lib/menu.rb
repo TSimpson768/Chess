@@ -8,6 +8,7 @@ class Menu
 
   def main_menu
     puts 'Welcome to Chess!'
+    instructions
     puts 'Would you like to'
     puts '1. Start a new game, or'
     puts '2. Load a saved game'
@@ -28,5 +29,20 @@ class Menu
 
       puts 'Error!'
     end
+  end
+
+  def instructions
+    puts 'This is a command line chess game which implements all the rules of chess except'
+    puts 'draws by threefold repetition and the 50 move rule. This game currently supports'
+    puts 'play between two human players.'
+    puts
+    puts 'To make a move, type in the coordinates of the piece'
+    puts 'you want to move, followed by the destination coordinates, ie A2A4 to move the piece'
+    puts 'on A2 to A4. To castle, move the king to its destination after castling.'
+    puts
+    puts 'When check occurs, the player will be notified. Only moves out of check are accepted'
+    puts 'The game will end upon checkmate or stalemate'
+    puts
+    puts 'To save, type s or S when making a move.'
   end
 end

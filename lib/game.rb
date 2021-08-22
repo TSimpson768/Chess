@@ -21,12 +21,11 @@ class Game
       @board.print_board
       puts "#{@current_player.colour} to move"
       make_move
-      break if @board.checkmate?(@opposing_player) || @board.stalemate?(@opposing_player)
+      break if game_over?
 
       manage_check
       switch_players
     end
-    game_over
   end
 
   def manage_check
@@ -60,9 +59,13 @@ class Game
   end
 
   # Code to run when the game ends
-  def game_over
+  def game_over?
+    checkmate = @board.checkmate?(@opposing_player)
+    return unless checkmate || @board.stalemate?(@opposing_player)
+
     puts 'Game over!'
-    sleep(3)
+    puts "#{@current_player} won!" if checkmate
+    true
   end
 
   # Takes a player input if it is valid (correctly formatted? Legal might be in make move)
