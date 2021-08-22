@@ -285,7 +285,7 @@ describe Board do
       expect(board).to eq(board_after_expected)
     end
 
-    it 'Processes en-passent captures' do
+    it 'Processes en-passant captures' do
       board = move_board.instance_variable_get(:@board)
       white_pawn = instance_double(Pawn)
       allow(white_pawn).to receive(:owner).and_return(white)
@@ -297,14 +297,14 @@ describe Board do
       allow(black_pawn).to receive(:instance_of?)
       allow(black_pawn).to receive(:instance_of?).with(Pawn).and_return(true)
       allow(black_pawn).to receive(:move)
-      board[0][4].instance_variable_set(:@piece, white_pawn)
-      board[1][4].instance_variable_set(:@piece, black_pawn)
-      move_board.instance_variable_set(:@en_passant_target, [0, 4])
+      board[4][3].instance_variable_set(:@piece, white_pawn)
+      board[4][4].instance_variable_set(:@piece, black_pawn)
+      move_board.instance_variable_set(:@en_passant_target, [3, 4])
       expected_board = move_board.clone.instance_variable_get(:@board)
-      expected_board[0][4].instance_variable_set(:@piece, nil)
-      expected_board[1][4].instance_variable_set(:@piece, nil)
-      expected_board[0][3].instance_variable_set(:@piece, black_pawn)
-      move_board.move_piece([[1, 4], [0, 3]])
+      expected_board[4][3].instance_variable_set(:@piece, nil)
+      expected_board[4][4].instance_variable_set(:@piece, nil)
+      expected_board[3][3].instance_variable_set(:@piece, black_pawn)
+      move_board.move_piece([[4, 4], [3, 3]])
       expect(board).to eq expected_board
     end
 
