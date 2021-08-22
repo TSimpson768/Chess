@@ -18,7 +18,7 @@ describe Pawn do
       allow(empty_board).to receive(:valid_pos?).and_return(true)
       allow(empty_board).to receive(:check_after_move?).and_return(false)
       allow(empty_board).to receive(:locate_piece).and_return(nil)
-      allow(empty_board).to receive(:last_moved_piece)
+      allow(empty_board).to receive(:en_passant_target)
     end
     context 'For a white pawn' do
       subject(:white_pawn) { described_class.new(white) }

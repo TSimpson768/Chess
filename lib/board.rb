@@ -32,7 +32,7 @@ class Board
     @board.map { |row| row.map(&:clone) }
   end
 
-  attr_reader :last_moved_piece
+  attr_reader :en_passant_target
 
   # Return true if in check
   def check?(player)
