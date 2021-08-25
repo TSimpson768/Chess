@@ -75,7 +75,6 @@ class Board
   # 2 - Starting from the start_place, perform a search (Depth or breath first? idk)
   # return true if an unobstructed path to end place is found.
   def legal?(move, player)
-    puts "Legal #{player.colour}"
     start = move[0]
     destination = move[1]
     piece = locate_piece(start)
@@ -85,7 +84,6 @@ class Board
       [start, [start[0], (start[1] + destination[1]) / 2]], player
     )
 
-    puts 'here'
     possible_moves = piece.possible_moves(start, self)
     possible_moves.any? { |reachable_coord| reachable_coord == destination }
   end
@@ -139,8 +137,7 @@ class Board
     false
   end
 
-  # TODO: Attacked spaces are all spaces an opponent can move to, regardless
-  # of it putting them in check.
+  # Lists all spaces that are under attack.
   def list_unsafe_spaces(player)
     list_moves(player, false)[1]
   end
@@ -206,8 +203,7 @@ class Board
   end
 
   # Returns two arrays of possible moves.An entry in the first is the starting pos
-  # For that move, the entry in the seccond array with the same index is the destinatino
-  # HACK :, and mabye shorten function
+  # For that move, the entry in the seccond array with the same index is the destination
   def list_moves(player, for_player)
     (0..ROWS - 1).each_with_object([[], []]) do |x, attacked_spaces|
       (0..COLUMNS - 1).each_with_object(attacked_spaces) do |y, attacked_spaces|
