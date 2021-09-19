@@ -10,6 +10,10 @@ require_relative 'pieces/rook'
 require_relative 'pieces/bishop'
 require_relative 'pieces/knight'
 require_relative 'pieces/pawn'
+require_relative 'strategy/move'
+require_relative 'strategy/promote'
+require_relative 'strategy/enpassant'
+require_relative 'strategy/castle'
 
 require 'pry'
 # Might need a module to take the print_methods
@@ -255,7 +259,7 @@ class Board
   def get_strategy(move)
     if (move[0][1] - move[1][1]).abs == 2 && locate_piece(move[0]).instance_of?(King)
       Castle.new
-    elsif (move[0][0] - move[1][0]).abs == 1 && (move[0][1]- move[1][1]).abs == 1 && locate_piece(move[0]).instance_of?(Pawn)
+    elsif (move[0][0] - move[1][0]).abs == 1 && (move[0][1]- move[1][1]).abs == 1 && locate_piece(move[0]).instance_of?(Pawn) && locate_piece(move[1]).nil?
       EnPassant.new
     elsif (move[1][0] == 0 || move[1][0] == 7) && locate_piece(move[0]).instance_of?(Pawn)
       Promote.new
