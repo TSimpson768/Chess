@@ -101,13 +101,8 @@ class Board
   # Hack?: Does not check legality. Should only execute after checking
   # move is legal, if called externally?
   def move_piece(move)
-    start = locate_place(move[0])
-    destination = locate_place(move[1])
-    piece = start.exit_place
-    process_en_passant(move, piece, destination)
-    process_castling(move, piece)
-    piece = piece.promote if piece.instance_of?(Pawn) && (move[1][0].zero? || move[1][0] == 7)
-    destination.enter_place(piece)
+    strategy = get_strategy(move)
+    @board = strategy.make_move(move, @board)
   end
 
   # Print the board to the console
@@ -142,13 +137,13 @@ class Board
     list_moves(player, false)[1]
   end
 
-  private
-
   # [int, int] - > place
   # Returns the place at coords
   def locate_place(coords)
     @board[coords[0]][coords[1]]
   end
+
+  private
 
   # Player, Player -> 8 * 8 Array of pieces
   def initialize_board(white, black)
@@ -233,27 +228,39 @@ class Board
   # Return unless pawn is moving.
   # If pawn is moving into an empty square, remove ep target
   # Else if pawn is moving 2 spaces, set as ep target
-  def process_en_passant(move, piece, destination)
-    return unless piece.instance_of?(Pawn)
+  # def process_en_passant(move, piece, destination)
+  #   return unless piece.instance_of?(Pawn)
 
-    if @en_passant_target && move[0][1] != move[1][1] && destination.piece.nil?
-      locate_place(@en_passant_target).exit_place
-      @en_passant_target = nil
-    elsif (move[0][0] - move[1][0]).abs == 2
-      @en_passant_target == move[1]
-    end
-  end
+  #   if @en_passant_target && move[0][1] != move[1][1] && destination.piece.nil?
+  #     locate_place(@en_passant_target).exit_place
+  #     @en_passant_target = nil
+  #   elsif (move[0][0] - move[1][0]).abs == 2
+  #     @en_passant_target == move[1]
+  #   end
+  # end
 
-  def process_castling(move, piece)
-    return unless piece.instance_of?(King) && (move[0][1] - move[1][1]).abs == 2
+  # def process_castling(move, piece)
+  #   return unless piece.instance_of?(King) && (move[0][1] - move[1][1]).abs == 2
 
-    case move[1][1]
-    when 2
-      rook = locate_place([move[0][0], 0]).exit_place
-      locate_place([move[0][0], 3]).enter_place(rook)
-    when 6
-      rook = locate_place([move[0][0], 7]).exit_place
-      locate_place([move[0][0], 5]).enter_place(rook)
+  #   case move[1][1]
+  #   when 2
+  #     rook = locate_place([move[0][0], 0]).exit_place
+  #     locate_place([move[0][0], 3]).enter_place(rook)
+  #   when 6
+  #     rook = locate_place([move[0][0], 7]).exit_place
+  #     locate_place([move[0][0], 5]).enter_place(rook)
+  #   end
+  #end
+  # I don't like a 4 pronged conditional here
+  def get_strategy(move)
+    if (move[0][1] - move[1][1]).abs == 2 && locate_piece(move[0]).instance_of?(King)
+      Castle.new
+    elsif (move[0][0] - move[1][0]).abs == 1 && (move[0][1]- move[1][1]).abs == 1 && locate_piece(move[0]).instance_of?(Pawn)
+      EnPassant.new
+    elsif (move[1][0] == 0 || move[1][0] == 7) && locate_piece(move[0]).instance_of?(Pawn)
+      Promote.new
+    else
+      Move.new
     end
   end
 end

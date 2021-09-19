@@ -1,3 +1,4 @@
+require_relative 'move'
 class Promote < Move
   def make_move(move, board)
     old_piece = locate_place(move[0], board).exit_place

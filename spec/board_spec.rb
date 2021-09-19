@@ -6,6 +6,7 @@ require_relative '../lib/pieces/piece'
 require_relative '../lib/pieces/king'
 require_relative '../lib/pieces/queen'
 require_relative '../lib/pieces/pawn'
+require_relative '../lib/strategy/promote'
 require '../lib/constants'
 require '../lib/player'
 require 'yaml'
@@ -328,7 +329,7 @@ describe Board do
       expect(board).to eq(expected_board)
     end
 
-    it 'calls promote on the piece if its a pawn, and moving into rank 1 or 8' do
+    it 'Uses the promote stategy if its a pawn, and moving into rank 1 or 8' do
       board = move_board.instance_variable_get(:@board)
       white_pawn = instance_double(Pawn)
       allow(white_pawn).to receive(:owner).and_return(white)
@@ -336,8 +337,10 @@ describe Board do
       allow(white_pawn).to receive(:instance_of?).with(Pawn).and_return(true)
       allow(white_pawn).to receive(:move)
       allow(white_pawn).to receive(:promote)
+      promo = double(Promote)
+      allow(Promote).to receive(:new).and_return(promo)
       board[6][0].instance_variable_set(:@piece, white_pawn)
-      expect(white_pawn).to receive(:promote).once
+      expect(promo).to receive(:make_move).once
       move_board.move_piece([[6, 0], [7, 0]])
     end
   end
