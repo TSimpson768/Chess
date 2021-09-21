@@ -339,6 +339,7 @@ describe Board do
       allow(white_pawn).to receive(:promote)
       promo = double(Promote)
       allow(Promote).to receive(:new).and_return(promo)
+      allow(promo).to receive(:make_move).and_return(board)
       board[6][0].instance_variable_set(:@piece, white_pawn)
       expect(promo).to receive(:make_move).once
       move_board.move_piece([[6, 0], [7, 0]])
