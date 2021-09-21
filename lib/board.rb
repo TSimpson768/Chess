@@ -96,13 +96,15 @@ class Board
   # This needs move piece to not check legality
   def check_after_move?(move, player)
     board_clone = clone
-    board_clone.move_piece(move)
+    strategy = get_strategy(move)
+    strategy = Move.new if strategy.instance_of?(Promote)
+
+    board_clone.move_piece(move, strategy)
     board_clone.check?(player)
   end
 
   # Move the piece on start_place to end place
-  def move_piece(move)
-    strategy = get_strategy(move)
+  def move_piece(move, strategy = get_strategy(move))
     @board = strategy.make_move(move, @board)
     @en_passant_target = ep_target(move)
   end
