@@ -254,11 +254,12 @@ class Board
   #     locate_place([move[0][0], 5]).enter_place(rook)
   #   end
   #end
-  # I don't like a 4 pronged conditional here
+  # I don't like a 4 pronged conditional here. Is there a better way to do this?
   def get_strategy(move)
     if (move[0][1] - move[1][1]).abs == 2 && locate_piece(move[0]).instance_of?(King)
       Castle.new
-    elsif (move[0][0] - move[1][0]).abs == 1 && (move[0][1]- move[1][1]).abs == 1 && locate_piece(move[0]).instance_of?(Pawn) && locate_piece(move[1]).nil?
+    elsif (move[0][0] - move[1][0]).abs == 1 && (move[0][1] - move[1][1]).abs == 1 &&
+          locate_piece(move[0]).instance_of?(Pawn) && locate_piece(move[1]).nil?
       EnPassant.new
     elsif (move[1][0] == 0 || move[1][0] == 7) && locate_piece(move[0]).instance_of?(Pawn)
       Promote.new
