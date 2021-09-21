@@ -95,7 +95,6 @@ class Board
   # Return true if moving from start to end will leave player in check
   # This needs move piece to not check legality
   def check_after_move?(move, player)
-    puts move
     board_clone = clone
     board_clone.move_piece(move)
     board_clone.check?(player)
