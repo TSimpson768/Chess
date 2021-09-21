@@ -82,14 +82,36 @@ class Board
     start = move[0]
     destination = move[1]
     piece = locate_piece(start)
-    return false if !piece || piece.owner != player
+    return false unless valid_move(start, destination, player)
+
+    possible_moves = piece.possible_moves(start, self)
+    possible_moves.any? { |reachable_coord| reachable_coord == destination }
+  end
+
+  # Returns true if a piece can move from start to destination without causing check or moving an opponents piece
+  def valid_move(start, destination, player)
+    return false unless valid_pos?(destination, player)
+    return false unless owned_by_player(start, player)
     return false if check_after_move?([start, destination], player)
+    return false unless safe_path_for_king?(start, destination, player)
+
+    true
+  end
+
+  def owned_by_player(pos, player)
+    piece = locate_piece(pos)
+    return false unless piece
+
+    piece.owner == player
+  end
+
+  def safe_path_for_king?(start, destination, player)
+    piece = locate_piece(start)
     return false if piece.instance_of?(King) && (start[1] - destination[1]).abs == 2 && check_after_move?(
       [start, [start[0], (start[1] + destination[1]) / 2]], player
     )
 
-    possible_moves = piece.possible_moves(start, self)
-    possible_moves.any? { |reachable_coord| reachable_coord == destination }
+    true
   end
 
   # Return true if moving from start to end will leave player in check
@@ -122,12 +144,11 @@ class Board
 
   # [Int, int] -> Piece or nil gets a pointer to the piece at the given co-ordinates, if it exists
   def locate_piece(coords)
-    place = @board[coords[0]][coords[1]]
-    place.piece
+    place = locate_place(coords)
+    place&.piece
   end
 
   # Return true if a piece belonging to owner can leagally occupy pos. Else, return false
-  # TODO: Return false for Out of bounds position
   def valid_pos?(pos, owner)
     piece = locate_piece(pos)
 
@@ -144,6 +165,8 @@ class Board
   # [int, int] - > place
   # Returns the place at coords
   def locate_place(coords)
+    return nil if out_of_bounds?(coords)
+
     @board[coords[0]][coords[1]]
   end
 
@@ -270,8 +293,13 @@ class Board
   end
 
   def ep_target(move)
-    return nil unless locate_piece(move[1]).instance_of?(Pawn) && (move[0][0] - move[1][0]).abs == 2
+    possible_target = locate_piece(move[1])
+    return nil unless possible_target.instance_of?(Pawn) && (move[0][0] - move[1][0]).abs == 2
 
     move[1]
+  end
+
+  def out_of_bounds?(next_pos)
+    next_pos.any? { |coord| coord.negative? || coord > 7 }
   end
 end
