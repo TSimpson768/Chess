@@ -102,11 +102,10 @@ class Board
   end
 
   # Move the piece on start_place to end place
-  # Hack?: Does not check legality. Should only execute after checking
-  # move is legal, if called externally?
   def move_piece(move)
     strategy = get_strategy(move)
     @board = strategy.make_move(move, @board)
+    @en_passant_target = ep_target(move)
   end
 
   # Print the board to the console
@@ -266,5 +265,11 @@ class Board
     else
       Move.new
     end
+  end
+
+  def ep_target(move)
+    return nil unless locate_piece(move[1]).instance_of?(Pawn) && (move[0][0] - move[1][0]).abs == 2
+
+    move[1]
   end
 end
