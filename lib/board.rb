@@ -15,12 +15,14 @@ require_relative 'strategy/promote'
 require_relative 'strategy/enpassant'
 require_relative 'strategy/castle'
 require_relative 'board_output'
+require_relative 'board_logic'
 
 require 'pry'
 # Might need a module to take the print_methods
 class Board
   include Constants
   include BoardOutput
+  include BoardLogic
   ROWS = 8
   COLUMNS = 8
   def initialize(white, black, board = initialize_board(white, black), en_passant_target = nil)
@@ -90,8 +92,7 @@ class Board
 
   # Returns true if a piece can move from start to destination without causing check or moving an opponents piece
   def valid_move(start, destination, player)
-    return false unless valid_pos?(destination, player)
-    return false unless locate_piece(start)&.owner == player
+    return false unless valid_pos?(destination, player) && locate_piece(start)&.owner == player
     return false if check_after_move?([start, destination], player)
     return false unless safe_path_for_king?(start, destination, player)
 
@@ -137,11 +138,6 @@ class Board
     return true if piece.nil? || piece.owner != owner
 
     false
-  end
-
-  # Lists all spaces that are under attack.
-  def list_unsafe_spaces(player)
-    list_moves(player, false)[1]
   end
 
   # [int, int] - > place
@@ -190,38 +186,6 @@ class Board
     board[7][6].enter_place(Knight.new(black))
     board[7][7].enter_place(Rook.new(black))
     board
-  end
-
-  # Returns two arrays of possible moves.An entry in the first is the starting pos
-  # For that move, the entry in the seccond array with the same index is the destination
-  # Player, Bool -> [[], []]
-  def list_moves(player, for_player)
-    (0..ROWS - 1).each_with_object([[], []]) do |x, attacks|
-      (0..COLUMNS - 1).each_with_object(attacks) do |y, attacked_spaces|
-        piece = locate_piece([y, x])
-        push_piece_moves([y, x], attacked_spaces) if piece && helper_for_list_moves(player, piece.owner, for_player)
-
-        attacked_spaces
-      end
-    end
-  end
-
-  def push_piece_moves(coords, attacked_spaces)
-    piece = locate_piece(coords)
-    attacked_by_piece = piece.possible_moves(coords, self)
-    attacked_by_piece.length.times { attacked_spaces[0].push(coords) }
-    attacked_by_piece.each { |attacked_pos| attacked_spaces[1].push(attacked_pos) }
-  end
-
-  # Player, player, bool
-  # If equal == true, return result of player == piece_owner
-  # else, return player =! piece_owner
-  def helper_for_list_moves(player, piece_owner, equal)
-    if equal
-      player == piece_owner
-    else
-      player != piece_owner
-    end
   end
 
   # I don't like a 4 pronged conditional here. Is there a better way to do this?
