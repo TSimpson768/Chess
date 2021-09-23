@@ -1,17 +1,16 @@
 module BoardOutput
-    # Print the board to the console
-    def print_board
-      print_header
+  # Print the board to the console
+  def print_board
+    print_header
+    print_divider
+    @board.reverse.each_with_index do |row, index|
+      print "#{self.class::ROWS - index} "
+      print_row(row)
       print_divider
-      @board.reverse.each_with_index do |row, index|
-        print "#{self.class::ROWS - index} "
-        print_row(row)
-        print_divider
-      end
     end
+  end
 
-    private
-
+  private
 
   def print_row(row)
     print '|'

@@ -1,7 +1,7 @@
 require_relative '../../lib/strategy/enpassant'
 describe EnPassant do
   subject(:enpassant) { described_class.new }
-  let(:empty_board) {
+  let(:empty_board) do
     board = []
     8.times do
       row = []
@@ -11,7 +11,7 @@ describe EnPassant do
       board.push(row)
     end
     board
-  }
+  end
   let(:white) { instance_double(Player) }
   let(:black) { instance_double(Player) }
   let(:white_pawn) { instance_double(Pawn) }

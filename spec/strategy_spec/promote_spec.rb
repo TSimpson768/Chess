@@ -18,7 +18,7 @@ describe Promote do
     allow(black_pawn).to receive(:owner).and_return(black)
   end
   describe '#make_move' do
-    let(:empty_board) {
+    let(:empty_board) do
       board = []
       8.times do
         row = []
@@ -28,7 +28,7 @@ describe Promote do
         board.push(row)
       end
       board
-    }
+    end
 
     it 'Promotes a white pawn moving on to an 8th rank empty space' do
       expected_board = empty_board.map { |row| row.map(&:clone) }

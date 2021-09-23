@@ -3,7 +3,7 @@ require 'pry'
 describe Move do
   subject(:move) { described_class.new }
   let(:board) { instance_double(Board) }
-  let(:empty_board) {
+  let(:empty_board) do
     board = []
     8.times do
       row = []
@@ -13,7 +13,7 @@ describe Move do
       board.push(row)
     end
     board
-  }
+  end
   let(:white) { instance_double(Player) }
   let(:black) { instance_double(Player) }
   let(:white_queen) { instance_double(Queen) }

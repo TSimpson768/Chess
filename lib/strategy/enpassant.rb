@@ -1,6 +1,5 @@
 require_relative 'move'
 class EnPassant < Move
-  
   def make_move(move, board)
     super(move, board)
     # The piece to be removed has y from initial part of move, and x from final
