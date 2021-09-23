@@ -64,7 +64,7 @@ class Game
     return unless checkmate || @board.stalemate?(@opposing_player)
 
     puts 'Game over!'
-    puts "#{@current_player.colour.to_s} won!" if checkmate
+    puts "#{@current_player.colour} won!" if checkmate
     true
   end
 
