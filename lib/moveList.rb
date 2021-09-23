@@ -17,7 +17,7 @@ class MoveList
     next_pos = [starting_position[0] + @move[0], starting_position[1] + @move[1]]
     return non_slide_move(next_pos, board, owner) unless @sliding
 
-    generate_slide_moves(next_pos, board, owner).compact
+    generate_slide_moves(next_pos, board, owner)
   end
 
   private
