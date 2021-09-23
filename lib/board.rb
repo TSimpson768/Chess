@@ -14,11 +14,13 @@ require_relative 'strategy/move'
 require_relative 'strategy/promote'
 require_relative 'strategy/enpassant'
 require_relative 'strategy/castle'
+require_relative 'board_output'
 
 require 'pry'
 # Might need a module to take the print_methods
 class Board
   include Constants
+  include BoardOutput
   ROWS = 8
   COLUMNS = 8
   def initialize(white, black, board = initialize_board(white, black), en_passant_target = nil)
@@ -122,17 +124,6 @@ class Board
     @en_passant_target = ep_target(move)
   end
 
-  # Print the board to the console
-  def print_board
-    print_header
-    print_divider
-    @board.reverse.each_with_index do |row, index|
-      print "#{ROWS - index} "
-      print_row(row)
-      print_divider
-    end
-  end
-
   # [Int, int] -> Piece or nil gets a pointer to the piece at the given co-ordinates, if it exists
   def locate_piece(coords)
     place = locate_place(coords)
@@ -199,20 +190,6 @@ class Board
     board[7][6].enter_place(Knight.new(black))
     board[7][7].enter_place(Rook.new(black))
     board
-  end
-
-  def print_row(row)
-    print '|'
-    row.each(&:print_place)
-    puts ' '
-  end
-
-  def print_header
-    puts '    A   B   C   D   E   F   G   H   '
-  end
-
-  def print_divider
-    puts '==================================='
   end
 
   # Returns two arrays of possible moves.An entry in the first is the starting pos
