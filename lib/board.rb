@@ -226,18 +226,23 @@ class Board
 
   # Returns two arrays of possible moves.An entry in the first is the starting pos
   # For that move, the entry in the seccond array with the same index is the destination
+  # Player, Bool -> [[], []]
   def list_moves(player, for_player)
-    (0..ROWS - 1).each_with_object([[], []]) do |x, attacked_spaces|
-      (0..COLUMNS - 1).each_with_object(attacked_spaces) do |y, attacked_spaces|
+    (0..ROWS - 1).each_with_object([[], []]) do |x, attacks|
+      (0..COLUMNS - 1).each_with_object(attacks) do |y, attacked_spaces|
         piece = locate_piece([y, x])
-        if piece && helper_for_list_moves(player, piece.owner, for_player)
-          attacked_by_piece = piece.possible_moves([y, x], self)
-          attacked_by_piece.length.times { attacked_spaces[0].push([y, x]) }
-          attacked_by_piece.each { |attacked_pos| attacked_spaces[1].push(attacked_pos) }
-        end
+        push_piece_moves([y, x], attacked_spaces) if piece && helper_for_list_moves(player, piece.owner, for_player)
+
         attacked_spaces
       end
     end
+  end
+
+  def push_piece_moves(coords, attacked_spaces)
+    piece = locate_piece(coords)
+    attacked_by_piece = piece.possible_moves(coords, self)
+    attacked_by_piece.length.times { attacked_spaces[0].push(coords) }
+    attacked_by_piece.each { |attacked_pos| attacked_spaces[1].push(attacked_pos) }
   end
 
   # Player, player, bool
