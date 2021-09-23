@@ -23,7 +23,7 @@ module BoardLogic
 
   def push_piece_moves(coords, attacked_spaces)
     piece = locate_piece(coords)
-    attacked_by_piece = piece.possible_moves(coords, self)
+    attacked_by_piece = piece.possible_moves(coords, self).compact
     attacked_by_piece.length.times { attacked_spaces[0].push(coords) }
     attacked_by_piece.each { |attacked_pos| attacked_spaces[1].push(attacked_pos) }
   end

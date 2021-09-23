@@ -52,6 +52,8 @@ class Board
 
     starts, destinations = list_moves(player, true)
     destinations.each_with_index do |move, index|
+      next unless valid_move(starts[index], move, player)
+
       return false unless check_after_move?([starts[index], move], player)
     end
     puts 'Checkmate!'
@@ -106,6 +108,7 @@ class Board
   # This needs move piece to not check legality
   def check_after_move?(move, player)
     board_clone = clone
+    p move
     strategy = get_strategy(move)
     strategy = Move.new if strategy.instance_of?(Promote)
 
