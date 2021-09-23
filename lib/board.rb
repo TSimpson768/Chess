@@ -34,14 +34,6 @@ class Board
     @en_passant_target = en_passant_target
   end
 
-  def initialize_copy(original_board)
-    @board = original_board.clone_board
-  end
-
-  def clone_board
-    @board.map { |row| row.map(&:clone) }
-  end
-
   attr_reader :en_passant_target
 
   # Return true if in check

@@ -1,4 +1,12 @@
 module BoardLogic
+  def initialize_copy(original_board)
+    @board = original_board.clone_board
+  end
+
+  def clone_board
+    @board.map { |row| row.map(&:clone) }
+  end
+
   # Returns two arrays of possible moves.An entry in the first is the starting pos
   # For that move, the entry in the seccond array with the same index is the destination
   # Player, Bool -> [[], []]
@@ -34,5 +42,13 @@ module BoardLogic
   # Lists all spaces that are under attack.
   def list_unsafe_spaces(player)
     list_moves(player, false)[1]
+  end
+
+  # [int, int] - > place
+  # Returns the place at coords
+  def locate_place(coords)
+    return nil if out_of_bounds?(coords)
+
+    @board[coords[0]][coords[1]]
   end
 end
