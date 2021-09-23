@@ -49,11 +49,9 @@ class Board
   end
 
   # Return true if player is in checkmate
-  # To get around messy output of list_moves
   def checkmate?(player)
     return false unless check?(player)
 
-    # Get all legal moves for player
     starts, destinations = list_moves(player, true)
     destinations.each_with_index do |move, index|
       return false unless check_after_move?([starts[index], move], player)
@@ -91,18 +89,11 @@ class Board
   # Returns true if a piece can move from start to destination without causing check or moving an opponents piece
   def valid_move(start, destination, player)
     return false unless valid_pos?(destination, player)
-    return false unless owned_by_player(start, player)
+    return false unless locate_piece(start)&.owner == player
     return false if check_after_move?([start, destination], player)
     return false unless safe_path_for_king?(start, destination, player)
 
     true
-  end
-
-  def owned_by_player(pos, player)
-    piece = locate_piece(pos)
-    return false unless piece
-
-    piece.owner == player
   end
 
   def safe_path_for_king?(start, destination, player)
@@ -256,33 +247,6 @@ class Board
     end
   end
 
-  # [int, int], piece, place
-  # Return unless pawn is moving.
-  # If pawn is moving into an empty square, remove ep target
-  # Else if pawn is moving 2 spaces, set as ep target
-  # def process_en_passant(move, piece, destination)
-  #   return unless piece.instance_of?(Pawn)
-
-  #   if @en_passant_target && move[0][1] != move[1][1] && destination.piece.nil?
-  #     locate_place(@en_passant_target).exit_place
-  #     @en_passant_target = nil
-  #   elsif (move[0][0] - move[1][0]).abs == 2
-  #     @en_passant_target == move[1]
-  #   end
-  # end
-
-  # def process_castling(move, piece)
-  #   return unless piece.instance_of?(King) && (move[0][1] - move[1][1]).abs == 2
-
-  #   case move[1][1]
-  #   when 2
-  #     rook = locate_place([move[0][0], 0]).exit_place
-  #     locate_place([move[0][0], 3]).enter_place(rook)
-  #   when 6
-  #     rook = locate_place([move[0][0], 7]).exit_place
-  #     locate_place([move[0][0], 5]).enter_place(rook)
-  #   end
-  #end
   # I don't like a 4 pronged conditional here. Is there a better way to do this?
   def get_strategy(move)
     if (move[0][1] - move[1][1]).abs == 2 && locate_piece(move[0]).instance_of?(King)
