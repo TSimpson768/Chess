@@ -38,6 +38,7 @@ describe Board do
     allow(black).to receive(:colour).and_return(:black)
     allow(white_king).to receive(:owner).and_return(white)
     allow(white_king).to receive(:instance_of?).with(Pawn).and_return(false)
+    allow(white_king).to receive(:instance_of?).with(King).and_return(true)
     allow(white_king).to receive(:move)
     allow(white_king).to receive(:moved)
     allow(white_queen).to receive(:owner).and_return(white)
@@ -51,21 +52,6 @@ describe Board do
   end
   matcher :place_equal do
     match { place }
-  end
-  describe '#initialize' do
-    # Needs updating to final chess position
-    xit 'initializes an array containing 8 arrays of 8 places' do
-      expected_result = [[Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new],
-                         [Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new],
-                         [Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new],
-                         [Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new],
-                         [Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new],
-                         [Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new],
-                         [Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new],
-                         [Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new, Place.new]]
-      result = default_board.instance_variable_get(:@board)
-      expect(result).to eq(expected_result)
-    end
   end
 
   describe '#legal?' do

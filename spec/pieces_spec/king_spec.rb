@@ -46,15 +46,6 @@ describe King do
       expect(result).to eq(expected_result)
     end
 
-    xit 'Does not return a castling move if the king has to move through an attacked space' do
-      starting_position = [0, 4]
-      expected_result = [[0, 2], [0, 3], [1, 3], [1, 4], [1, 5], [0, 5]].sort
-      allow(castle_board).to receive(:check_after_move?)
-      allow(castle_board).to receive(:check_after_move?).with([starting_position, [0, 5]], player).and_return(true)
-      result = king.possible_moves(starting_position, castle_board).sort
-      expect(result).to eq(expected_result)
-    end
-
     it 'Only returns normal moves if king has previously moved' do
       starting_position = [0, 4]
       expected_result = [[0, 3], [1, 3], [1, 4], [1, 5], [0, 5]].sort
