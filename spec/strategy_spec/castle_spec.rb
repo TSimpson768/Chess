@@ -20,9 +20,13 @@ describe Castle do
   let(:black_rook) { instance_double(Rook) }
   before do
     allow(white_king).to receive(:move)
+    allow(white_king).to receive(:owner).and_return(white)
+    allow(black_king).to receive(:owner).and_return(black)
     allow(white_rook).to receive(:move)
     allow(black_king).to receive(:move)
     allow(black_rook).to receive(:move)
+    allow(white).to receive(:can_castle=)
+    allow(black).to receive(:can_castle=)
   end
   describe '#make_move' do
     it 'Castles white kingside' do

@@ -35,6 +35,7 @@ describe Board do
 
   before do
     allow(white).to receive(:colour).and_return(:white)
+    allow(white).to receive(:can_castle=)
     allow(black).to receive(:colour).and_return(:black)
     allow(white_king).to receive(:owner).and_return(white)
     allow(white_king).to receive(:instance_of?).with(Pawn).and_return(false)

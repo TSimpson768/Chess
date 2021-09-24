@@ -27,11 +27,12 @@ class Board
   include BoardBuilder
   ROWS = 8
   COLUMNS = 8
-  def initialize(white, black, board = initialize_board(white, black), en_passant_target = nil)
+  def initialize(white, black, board = initialize_board(white, black), en_passant_target = nil, fifty_move_count = 0)
     # An array of 64 piece objects. Needs to be created in the starting possition for chess.
     @board = board
     # [array, array] Location of a piece that can be captured via en-passant
     @en_passant_target = en_passant_target
+    @fifty_move_count = fifty_move_count
   end
 
   attr_reader :en_passant_target

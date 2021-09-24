@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require '../lib/game'
+require_relative '../lib/game'
 describe Game do
   subject(:game_default) { described_class.new }
   describe '#switch_players' do

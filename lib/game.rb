@@ -6,6 +6,7 @@ class Game
   require_relative 'player'
   require_relative 'constants'
   require_relative 'saves'
+  require_relative 'position'
   include Saves
   include Constants
   def initialize(white = Player.new(WHITE), black = Player.new(BLACK), board = Board.new(white, black))
@@ -48,7 +49,7 @@ class Game
   # Make a valid move
   # loop do
   # input move - returns move if it is correctly formatted
-  # board.legal? - returns true if the move is lega;
+  # board.legal? - returns true if the move is legal
   def make_move
     move = nil
     loop do
@@ -58,6 +59,7 @@ class Game
       puts 'Please enter a legal move'
     end
     update_fifty_move_counter(move)
+    @previous_positions.push(Position.new(@board, @current_player, @opposing_player))
     @board.move_piece(move)
   end
 
@@ -69,11 +71,15 @@ class Game
   # Code to run when the game ends
   def game_over?
     checkmate = @board.checkmate?(@opposing_player)
-    return unless checkmate || @board.stalemate?(@opposing_player) || @fifty_move_count >= 100
+    return unless checkmate || @board.stalemate?(@opposing_player) || @fifty_move_count >= 100 || threefold_repeat?
 
     puts 'Game over!'
     puts "#{@current_player.colour} won!" if checkmate
     true
+  end
+
+  def threefold_repeat?
+    @previous_positions.count(@previous_positions.last) >= 3
   end
 
   # Takes a player input if it is valid (correctly formatted? Legal might be in make move)
