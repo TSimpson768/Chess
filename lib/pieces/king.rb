@@ -40,7 +40,7 @@ class King < Piece
   # Castling moves returns possible castlling moves the king can make
   # Calling check? is causing that little fuck up again
   def castling_moves(pos, board)
-    return [] if @owner.check || pos[1] != 4
+    return [] if @owner.check || pos[1] != 4 || !@owner.can_castle
 
     home_rank = (0..7).map { |index| board.locate_piece([pos[0], index]) }
     [castle_queenside(home_rank[0..3], pos, board), castle_kingside(home_rank[5..7], pos, board)].compact
