@@ -14,7 +14,7 @@ class Game
     @current_player = white
     @opposing_player = black
     @fifty_move_count = 0
-    @previous_positions = []
+    @previous_positions = [Position.new(@board.clone, @current_player.clone, @opposing_player.clone)]
   end
 
   # Main game loop
@@ -59,8 +59,8 @@ class Game
       puts 'Please enter a legal move'
     end
     update_fifty_move_counter(move)
-    @previous_positions.push(Position.new(@board, @current_player, @opposing_player))
     @board.move_piece(move)
+    @previous_positions.push(Position.new(@board.clone, @opposing_player.clone, @current_player.clone))
   end
 
   def update_fifty_move_counter(move)
@@ -79,6 +79,8 @@ class Game
   end
 
   def threefold_repeat?
+    puts "The next position has occured #{@previous_positions.count(@previous_positions.last)} times"
+    binding.pry
     @previous_positions.count(@previous_positions.last) >= 3
   end
 

@@ -19,6 +19,10 @@ class Piece
     moves.flatten(1)
   end
 
+  def ==(other)
+    self.class == other.class && @owner == other.owner
+  end
+
   def move
     @moved ||= true
   end

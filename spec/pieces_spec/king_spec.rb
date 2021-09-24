@@ -15,6 +15,7 @@ describe King do
     allow(board).to receive(:valid_pos?).and_return(true)
     allow(board).to receive(:check?)
     allow(player).to receive(:can_castle=)
+    allow(player).to receive(:can_castle).and_return(true)
   end
   describe '#possible_moves' do
     it 'Returns all 8 surrounding spaces at the centre of an empty board' do

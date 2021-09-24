@@ -35,7 +35,11 @@ class Board
     @fifty_move_count = fifty_move_count
   end
 
-  attr_reader :en_passant_target
+  attr_reader :en_passant_target, :board
+
+  def ==(other)
+    @board == other.board && @en_passant_target == other.en_passant_target
+  end
 
   # Return true if in check
   def check?(player)
