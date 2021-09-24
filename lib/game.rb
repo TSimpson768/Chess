@@ -12,6 +12,8 @@ class Game
     @board = board
     @current_player = white
     @opposing_player = black
+    @fifty_move_count = 0
+    @previous_positions = []
   end
 
   # Main game loop
@@ -55,7 +57,13 @@ class Game
 
       puts 'Please enter a legal move'
     end
+    update_fifty_move_counter(move)
     @board.move_piece(move)
+  end
+
+  def update_fifty_move_counter(move)
+    @fifty_move_count += 1
+    @fifty_move_count = 0 if @board.locate_piece(move[0]).instance_of?(Pawn) || @board.locate_piece(move[1])
   end
 
   # Code to run when the game ends

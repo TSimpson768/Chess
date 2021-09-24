@@ -53,6 +53,7 @@ describe Game do
       legal_move = [[1, 3], [2, 4]]
       before do
         allow(legal_game).to receive(:input_move).and_return(legal_move)
+        allow(legal_game).to receive(:update_fifty_move_counter)
       end
       it 'calls @board.move with it' do
         legal_board = instance_double(Board)
@@ -76,6 +77,7 @@ describe Game do
         illegal_game.instance_variable_set(:@board, illegal_board)
         allow(illegal_game).to receive(:input_move).and_return(illegal_move, legal_move)
         allow(illegal_game).to receive(:puts)
+        allow(illegal_game).to receive(:update_fifty_move_counter)
       end
       it 'puts an error message once' do
         illegal_message = 'Please enter a legal move'
@@ -130,6 +132,49 @@ describe Game do
         result = game_invalid.input_move
         expect(result).to eq([[0, 0], [7, 7]])
       end
+    end
+  end
+
+  describe '#update_fifty_move_counter' do
+    let(:queen) { instance_double(Queen) }
+    before do
+      allow(queen).to receive(:instance_of?).with(Pawn).and_return(false)
+    end
+    it 'Sets the counter to zero when moving a pawn' do
+      board = instance_double(Board)
+      game_default.instance_variable_set(:@fifty_move_count, 20)
+      move = [[1, 0], [1, 3]]
+      pawn = instance_double(Pawn)
+      allow(pawn).to receive(:instance_of?).with(Pawn).and_return(true)
+      allow(board).to receive(:locate_piece).with(move[0]).and_return(pawn)
+      game_default.instance_variable_set(:@board, board)
+      game_default.update_fifty_move_counter(move)
+      count = game_default.instance_variable_get(:@fifty_move_count)
+      expect(count).to eq(0)
+    end
+
+    it 'Sets the counter to zero when a piece is captured' do
+      board = instance_double(Board)
+      game_default.instance_variable_set(:@fifty_move_count, 25)
+      move = [[1, 7], [1, 3]]
+      allow(board).to receive(:locate_piece)
+      allow(board).to receive(:locate_piece).with(move[1]).and_return(queen)
+      game_default.instance_variable_set(:@board, board)
+      game_default.update_fifty_move_counter(move)
+      count = game_default.instance_variable_get(:@fifty_move_count)
+      expect(count).to eq(0)
+    end
+
+    it 'Increments the counter by 1 when moving a piece that is not a pawn and does not capture' do
+      board = instance_double(Board)
+      game_default.instance_variable_set(:@fifty_move_count, 15)
+      move = [[1, 2], [7, 2]]
+      allow(board).to receive(:locate_piece)
+      allow(board).to receive(:locate_piece).with(move[0]).and_return(queen)
+      game_default.instance_variable_set(:@board, board)
+      game_default.update_fifty_move_counter(move)
+      count = game_default.instance_variable_get(:@fifty_move_count)
+      expect(count).to eq(16)
     end
   end
 end
