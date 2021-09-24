@@ -69,7 +69,7 @@ class Game
   # Code to run when the game ends
   def game_over?
     checkmate = @board.checkmate?(@opposing_player)
-    return unless checkmate || @board.stalemate?(@opposing_player)
+    return unless checkmate || @board.stalemate?(@opposing_player) || @fifty_move_count >= 100
 
     puts 'Game over!'
     puts "#{@current_player.colour} won!" if checkmate
