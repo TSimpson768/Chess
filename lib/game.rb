@@ -130,4 +130,16 @@ class Game
     dest_file = kingside ? 6 : 2
     [[rank, 4], [rank, dest_file]]
   end
+
+  def quit_game
+    exit
+  end
+
+  def print_in_game_help
+    puts "To make a move, input the start and destination places in the format 'A1B2'"
+    puts "The game will check this a legal move, and execute it if so."
+    puts "You can castle, when legal, by inputing 0-0 or 0-0-0 to castle kingside and"
+    puts "queenside respectively"
+    puts "Type s or save to save the game, and type q or quit to exit the game."
+  end
 end
