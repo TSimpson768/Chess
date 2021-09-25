@@ -82,22 +82,25 @@ class Game
     @previous_positions.count(@previous_positions.last) >= 3
   end
 
-  # Takes a player input if it is valid (correctly formatted? Legal might be in make move)
-  def input_move
-    move_regex = /[a-h][1-8][a-h][1-8]/
-    input = nil
-    loop do
-      input = gets.chomp.downcase
-      break if move_regex.match?(input)
+  # Solicits player input. For a move, returns player input in the form [[y, x], [y, x]]
+  # Valid inputs - match move regex, with start and destination squares.
+  # 0-0-0 or 0-0 - castling moves.
+  # S or SAVE - save game.
+  # h or HELP - print a help screen
+  # q or quit - quit game.
 
-      if /[Ss]/.match?(input)
-        save_game
-        next
-      end
+  def input_move
+    input = gets.chomp.downcase
+    case input
+    when /[a-h][1-8][a-h][1-8]/
+      process_input(input)
+    when /s/
+      save_game
+    else
       puts "I don't understand that. Please input a move in format [starting square][destination]
  I.e. to move the piece at A1 to D4, type A1D4"
+      input_move
     end
-    process_input(input)
   end
 
   private
