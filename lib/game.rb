@@ -102,7 +102,7 @@ class Game
       save_game
     when 'h', 'help'
       print_in_game_help
-    when 'q', 'quit'
+    when 'q', 'quit', 'exit'
       quit_game
     else
       puts "I don't understand that. Please input a move in format [starting square][destination]
