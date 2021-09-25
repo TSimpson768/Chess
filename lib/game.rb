@@ -70,11 +70,11 @@ class Game
 
   # Code to run when the game ends
   def game_over?
-    checkmate = @board.checkmate?(@opposing_player)
-    return unless checkmate || @board.stalemate?(@opposing_player) || @fifty_move_count >= 100 || threefold_repeat?
+    method = game_over_method
+    return unless method
 
-    puts 'Game over!'
-    puts "#{@current_player.colour} won!" if checkmate
+    puts "Game over by #{method}"
+    method == 'checkmate' ? puts("#{@current_player.colour} won!") : puts("It's a draw!")
     true
   end
 
@@ -141,5 +141,17 @@ class Game
     puts "You can castle, when legal, by inputing 0-0 or 0-0-0 to castle kingside and"
     puts "queenside respectively"
     puts "Type s or save to save the game, and type q or quit to exit the game."
+  end
+
+  def game_over_method
+    if @board.checkmate?(@opposing_player)
+      'checkmate'
+    elsif @board.stalemate?(@opposing_player)
+      'stalemate'
+    elsif @fifty_move_count >= 100
+      'Fifty move rule: it has been 50 moves since the last capture or pawn move'
+    elsif threefold_repeat?
+      'Threefold repetition: The same position has occured three times.'
+    end
   end
 end

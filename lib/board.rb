@@ -61,7 +61,6 @@ class Board
 
       return false unless check_after_move?([starts[index], move], player)
     end
-    puts 'Checkmate!'
     true
   end
 
@@ -72,7 +71,6 @@ class Board
     moves = list_moves(player, true)[1]
     return unless moves.empty?
 
-    puts 'Stalemate - Its a draw!'
     true
   end
 
