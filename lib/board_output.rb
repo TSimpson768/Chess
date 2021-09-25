@@ -43,19 +43,19 @@ module BoardOutput
 
   def change_colour
     if @background_colour == :white
-      print "\e[30;47m"
+      print "\e[30;100m"
       @background_colour = :black
     else
-      print "\e[37;40m"
+      print "\e[37;41m"
       @background_colour = :white
     end
   end
 
   def current_colour
     if @background_colour == :white
-      print "\e[37;40m"
+      print "\e[37;41m"
     else
-      print "\e[30;47m"
+      print "\e[30;100m"
     end
   end
 end
