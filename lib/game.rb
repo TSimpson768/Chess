@@ -94,8 +94,16 @@ class Game
     case input
     when /[a-h][1-8][a-h][1-8]/
       process_input(input)
-    when /s/
+    when '0-0-0'
+      castle(false)
+    when '0-0'
+      castle(true)
+    when /s/, /save/
       save_game
+    when 'h', 'help'
+      print_in_game_help
+    when 'q', 'quit'
+      quit_game
     else
       puts "I don't understand that. Please input a move in format [starting square][destination]
  I.e. to move the piece at A1 to D4, type A1D4"
@@ -115,5 +123,11 @@ class Game
   def process_char(char)
     processed_char = char.ord
     processed_char < 96 ? processed_char - 49 : processed_char - 97
+  end
+
+  def castle(kingside)
+    rank = @current_player.colour == WHITE ? 0 : 7
+    dest_file = kingside ? 6 : 2
+    [[rank, 4], [rank, dest_file]]
   end
 end

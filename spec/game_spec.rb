@@ -133,6 +133,39 @@ describe Game do
         expect(result).to eq([[0, 0], [7, 7]])
       end
     end
+
+    context 'When current_player white' do
+      subject(:castle_game) { described_class.new }
+      it "Returns [[0, 4], [0, 6]] when input is '0-0'" do
+        allow(castle_game).to receive(:gets).and_return("0-0\n")
+        result = castle_game.input_move
+        expect(result).to eq([[0, 4], [0, 6]])
+      end
+
+      it "Returns [[0, 4], [0, 2]] when input is '0-0-0" do
+        allow(castle_game).to receive(:gets).and_return("0-0-0\n")
+        result = castle_game.input_move
+        expect(result).to eq([[0, 4], [0, 2]])
+      end
+    end
+
+    context 'When current_player is black' do
+      subject(:castle_game) { described_class.new }
+      before do
+        castle_game.switch_players
+      end
+      it "Returns [[7, 4], [7, 6]] when input is '0-0'" do
+        allow(castle_game).to receive(:gets).and_return("0-0\n")
+        result = castle_game.input_move
+        expect(result).to eq([[7, 4], [7, 6]])
+      end
+
+      it "Returns [[7, 4], [7, 2]] when input is '0-0-0" do
+        allow(castle_game).to receive(:gets).and_return("0-0-0\n")
+        result = castle_game.input_move
+        expect(result).to eq([[7, 4], [7, 2]])
+      end
+    end
   end
 
   describe '#update_fifty_move_counter' do
