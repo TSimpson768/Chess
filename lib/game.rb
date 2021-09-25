@@ -79,8 +79,6 @@ class Game
   end
 
   def threefold_repeat?
-    puts "The next position has occured #{@previous_positions.count(@previous_positions.last)} times"
-    binding.pry
     @previous_positions.count(@previous_positions.last) >= 3
   end
 

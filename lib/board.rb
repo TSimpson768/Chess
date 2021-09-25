@@ -113,7 +113,6 @@ class Board
   # This needs move piece to not check legality
   def check_after_move?(move, player)
     board_clone = clone
-    p move
     strategy = get_strategy(move)
     strategy = Move.new if strategy.instance_of?(Promote)
 
