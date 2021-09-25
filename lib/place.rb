@@ -15,7 +15,6 @@ class Place
     else
       print '   '
     end
-    print '|'
   end
 
   def ==(other)
