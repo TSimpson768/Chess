@@ -15,7 +15,7 @@ class Knight < Piece
   private
 
   def set_symbol
-    return '♘' if @owner.colour == WHITE
-    return '♞' if @owner.colour == BLACK
+    return "\e[37m♞\e[39m" if @owner.colour == WHITE
+    return "\e[30m♞\e[39m" if @owner.colour == BLACK
   end
 end
