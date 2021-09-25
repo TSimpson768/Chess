@@ -1,6 +1,6 @@
 # Chess
 
-The final project for the Ruby part of The Odin Project! The game is now working and implements all rules of chess except threefold repetition and the 50 move rule, but I think the code is still a bit messy.
+The final project for the Ruby part of The Odin Project! The game is now working and implements all of the rules of chess.
 
 My main takeaway from this is just how important good testing is. I've lost count on how many times I've had to update a test after a change, or I encountered a bug when playtesting which did not show up in my test suite.
 
